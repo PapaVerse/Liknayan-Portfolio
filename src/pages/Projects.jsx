@@ -1,180 +1,103 @@
 import { useState } from "react";
-import { ExternalLink, Monitor, Smartphone } from "lucide-react";
+import { ExternalLink, Monitor, Smartphone, Clock } from "lucide-react";
 
 export default function Projects() {
-  const [macroView, setMacroView] = useState("desktop");
-  const [cwpcView, setCwpcView] = useState("desktop");
+  const [views, setViews] = useState({
+    macro: "desktop",
+    hub: "desktop",
+    help: "desktop",
+    walk: "desktop",
+    chav: "desktop",
+    finder: "desktop",
+    cwpc: "desktop",
+  });
+
+  const toggleView = (key, view) => setViews((prev) => ({ ...prev, [key]: view }));
 
   return (
     <section className="pt-32 min-h-screen bg-white relative overflow-hidden text-[#071A4A]">
-      
-      {/* VIBRANT FLOATING BACKGROUND EFFECTS */}
-      <div className="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] bg-blue-200 rounded-full filter blur-[150px] opacity-30 animate-float"></div>
-      <div className="absolute bottom-[-5%] right-[-5%] w-[500px] h-[500px] bg-indigo-200 rounded-full filter blur-[150px] opacity-30 animate-float2"></div>
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* HEADER */}
-        <div className="mb-16">
-          <h1 className="text-5xl font-bold text-[#071A4A]">Projects</h1>
-          <p className="mt-6 text-gray-600 max-w-3xl">
-            A showcase of completed systems, ongoing developments, and upcoming
-            digital solutions focused on automation, business improvement, and
-            modern user experiences.
-          </p>
-        </div>
+        <h1 className="text-5xl font-bold mb-16">Projects</h1>
 
         {/* COMPLETED PROJECTS */}
-        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">
-          Completed Projects
-        </h2>
+        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Completed Projects</h2>
+        <ProjectCard title="Macro Wiring Technologies Co. Inc." desc="A corporate website transformation project that converted a static landing page into a dynamic business platform." tech={["Laravel", "MySQL", "Tailwind CSS", "Bluehost"]} link="https://www.macrowiring.com/" view={views.macro} onToggle={(v) => toggleView("macro", v)} imgDesk="/images/desktopmacro.png" imgMob="/images/mobilemacro.png" />
+        <ProjectCard title="CvSU Naic BSIT Hub" desc="A website platform for BSIT students in CvSU Naic, designed for efficient access to learning materials and department resources." tech={["Next.js", "Tailwind CSS", "Supabase", "PostgreSQL"]} view={views.hub} onToggle={(v) => toggleView("hub", v)} imgDesk="/images/desktophub.png" imgMob="/images/mobilehub.png" />
+        <ProjectCard title="IT Helpdesk Management System" desc="An internal company platform enabling employees to submit, track, and manage IT-related concerns through a centralized ticketing system." tech={["PHP", "Blade", "XAMPP", "MySQL"]} view={views.help} onToggle={(v) => toggleView("help", v)} imgDesk="/images/desktophelp.png" imgMob="/images/mobilehelp.png" showButton={true} btnText="Internal Company Website" />
+        <ProjectCard title="WalkMap" desc="An AI-powered mapping tool that helps users plan, explore, and navigate routes — blending geolocation with intelligent suggestions." tech={["React", "Supabase", "AI"]} link="https://walk-map-iota.vercel.app/" view={views.walk} onToggle={(v) => toggleView("walk", v)} imgDesk="/images/desktopwalk.png" imgMob="/images/mobilewalk.png" />
+        <ProjectCard title="Chavacano API" desc="Built the first open-source REST API for Chavacano, the only Spanish-based creole language in Asia, enabling developers to integrate language translation into their applications." tech={["Node.js", "Express", "MongoDB"]} link="https://chavacano-api.vercel.app/" view={views.chav} onToggle={(v) => toggleView("chav", v)} imgDesk="/images/desktopchav.png" imgMob="/images/mobilechav.png" />
+        <ProjectCard title="LocFinder" desc="A location finder application for easy navigation and tracking." tech={["React", "Vercel"]} link="https://loc-finder.vercel.app/" view={views.finder} onToggle={(v) => toggleView("finder", v)} imgDesk="/images/desktopfinder.png" imgMob="/images/mobilefinder.png" />
 
-        {/* MACRO WIRING */}
+        {/* CURRENT DEVELOPMENT */}
+        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Current Development</h2>
         <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
           <div className="grid lg:grid-cols-2">
             <div className="p-10">
-              <span className="text-xs tracking-widest text-[#071A4A] font-semibold">
-                COMPLETED • MAY 2026
-              </span>
-              <h2 className="text-3xl font-bold mt-5">Macro Wiring Technologies Co. Inc.</h2>
-              <p className="mt-5 text-gray-600 leading-relaxed">
-                A corporate website transformation project that converted a
-                static landing page into a dynamic business platform.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-6">
-                {["Laravel", "MySQL", "Tailwind CSS", "Bluehost", "Responsive Design"].map(item => (
-                  <span key={item} className="px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 bg-white">
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <a
-                href="https://www.macrowiring.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-8 px-5 py-3 rounded-lg bg-[#071A4A] text-white font-semibold hover:bg-blue-900 transition-colors"
-              >
-                Visit Website <ExternalLink size={18}/>
-              </a>
+              <h2 className="text-3xl font-bold">Cavite West Point College SIS Website</h2>
+              <p className="mt-5 text-gray-600 leading-relaxed">A complete Student Information System and institutional website solution currently being developed.</p>
+              <button disabled className="inline-flex items-center gap-2 mt-8 px-5 py-3 rounded-lg border border-[#071A4A] text-[#071A4A] font-semibold bg-gray-50 cursor-not-allowed">
+                <Clock size={18}/> On-Going Development
+              </button>
             </div>
-
             <div className="bg-gray-50/50 p-8 flex flex-col">
               <div className="flex gap-3 mb-5">
-                <button
-                  onClick={() => setMacroView("desktop")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
-                    macroView === "desktop" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"
-                  }`}
-                >
-                  <Monitor size={16}/> Desktop
-                </button>
-                <button
-                  onClick={() => setMacroView("mobile")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
-                    macroView === "mobile" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"
-                  }`}
-                >
-                  <Smartphone size={16}/> Mobile
-                </button>
+                <button onClick={() => toggleView("cwpc", "desktop")} className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${views.cwpc === "desktop" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"}`}><Monitor size={16}/> Desktop</button>
+                <button onClick={() => toggleView("cwpc", "mobile")} className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${views.cwpc === "mobile" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"}`}><Smartphone size={16}/> Mobile</button>
               </div>
-              <div className="h-[400px] w-full relative overflow-hidden rounded-xl border border-gray-200 shadow-lg">
-                <img
-                  src={macroView === "desktop" ? "/images/desktopmacro.png" : "/images/mobilemacro.png"}
-                  className="w-full h-full object-contain bg-white"
-                  alt="Macro Wiring Preview"
-                />
-              </div>
+              <img src={views.cwpc === "desktop" ? "/images/desktopcwpc.png" : "/images/mobilecwpc.png"} className="w-full h-[400px] object-contain bg-white rounded-xl border border-gray-200" alt="CWPC Preview" />
             </div>
           </div>
         </div>
 
-        {/* CURRENT PROJECT */}
-        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">
-          Current Development
-        </h2>
-
-        <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
-          <div className="grid lg:grid-cols-2">
-            <div className="p-10">
-              <span className="text-xs tracking-widest text-[#071A4A] font-semibold">IN DEVELOPMENT</span>
-              <h2 className="text-3xl font-bold mt-5">Cavite West Point College SIS Website</h2>
-              <p className="mt-5 text-gray-600 leading-relaxed">
-                A complete Student Information System and institutional website solution currently being developed.
-              </p>
-              <div className="mt-6 space-y-3 text-gray-600">
-                <p>• Public Website & CMS</p>
-                <p>• Online Admission System</p>
-                <p>• Student & Faculty Portal</p>
-              </div>
-              <div className="flex flex-wrap gap-3 mt-8">
-                {["React", "Node.js", "TypeScript", "Firebase", "Cloud"].map(item => (
-                  <span key={item} className="px-4 py-2 rounded-full border border-gray-200 bg-white text-sm text-gray-600">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-gray-50/50 p-8 flex flex-col">
-              <div className="flex gap-3 mb-5">
-                <button
-                  onClick={() => setCwpcView("desktop")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
-                    cwpcView === "desktop" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"
-                  }`}
-                >
-                  <Monitor size={16}/> Desktop
-                </button>
-                <button
-                  onClick={() => setCwpcView("mobile")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
-                    cwpcView === "mobile" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"
-                  }`}
-                >
-                  <Smartphone size={16}/> Mobile
-                </button>
-              </div>
-              <div className="h-[400px] w-full relative overflow-hidden rounded-xl border border-gray-200 shadow-lg">
-                <img
-                  src={cwpcView === "desktop" ? "/images/desktopcwpc.png" : "/images/mobilecwpc.png"}
-                  className="w-full h-full object-contain bg-white"
-                  alt="Project Preview"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* UPCOMING */}
+        {/* UPCOMING PROJECTS */}
         <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Upcoming Projects</h2>
         <div className="grid md:grid-cols-2 gap-8 pb-20">
-          <ProjectCard
-            title="MChat Communication System"
-            description="A secure internal communication platform featuring real-time messaging and administrative monitoring."
-            technologies={["Laravel", "React", "MySQL", "WebSockets"]}
-          />
-          <ProjectCard
-            title="Future Digital Solutions"
-            description="Additional upcoming systems focused on automation, business intelligence, and customized software."
-            technologies={["Web Development", "Cloud", "Automation"]}
-          />
+          <ProjectCardUpcoming title="MChat Communication System" description="A secure internal communication platform featuring real-time messaging and administrative monitoring." technologies={["Laravel", "React", "MySQL", "WebSockets"]} />
+          <ProjectCardUpcoming title="Future Digital Solutions" description="Additional upcoming systems focused on automation, business intelligence, and customized software." technologies={["Web Development", "Cloud", "Automation"]} />
         </div>
       </div>
     </section>
   );
 }
 
-function ProjectCard({ title, description, technologies }) {
+function ProjectCard({ title, desc, tech, link, view, onToggle, imgDesk, imgMob, showButton = true, btnText = "Visit Website" }) {
+  return (
+    <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
+      <div className="grid lg:grid-cols-2">
+        <div className="p-10">
+          <h2 className="text-3xl font-bold">{title}</h2>
+          <p className="mt-5 text-gray-600 leading-relaxed">{desc}</p>
+          <div className="flex flex-wrap gap-3 mt-6">
+            {tech.map((t) => <span key={t} className="px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 bg-white">{t}</span>)}
+          </div>
+          {showButton && (
+            <a href={link || "#"} target={link ? "_blank" : undefined} rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-8 px-5 py-3 rounded-lg bg-[#071A4A] text-white font-semibold hover:bg-blue-900 transition-colors">
+              {btnText} {link && <ExternalLink size={18} />}
+            </a>
+          )}
+        </div>
+        <div className="bg-gray-50/50 p-8 flex flex-col">
+          <div className="flex gap-3 mb-5">
+            <button onClick={() => onToggle("desktop")} className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${view === "desktop" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"}`}><Monitor size={16} /> Desktop</button>
+            <button onClick={() => onToggle("mobile")} className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${view === "mobile" ? "border-[#071A4A] text-[#071A4A] bg-white" : "border-gray-300 text-gray-500"}`}><Smartphone size={16} /> Mobile</button>
+          </div>
+          <div className="h-[400px] w-full relative overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+            <img src={view === "desktop" ? imgDesk : imgMob} className="w-full h-full object-contain bg-white" alt="Project Preview" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProjectCardUpcoming({ title, description, technologies }) {
   return (
     <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-all">
       <span className="text-[#071A4A] text-sm tracking-widest font-semibold">UPCOMING PROJECT</span>
       <h3 className="text-2xl font-bold mt-5 text-[#071A4A]">{title}</h3>
       <p className="mt-4 text-gray-600">{description}</p>
       <div className="flex flex-wrap gap-3 mt-6">
-        {technologies.map(item => (
-          <span key={item} className="px-3 py-2 border border-gray-200 bg-white rounded-full text-xs text-gray-600">
-            {item}
-          </span>
-        ))}
+        {technologies.map(item => <span key={item} className="px-3 py-2 border border-gray-200 bg-white rounded-full text-xs text-gray-600">{item}</span>)}
       </div>
     </div>
   );
