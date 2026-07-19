@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 export default function Services() {
   const services = [
     { title: "Web Application Development", description: "We build secure, scalable, and high-performing web applications designed to streamline business processes and improve user experiences.", icon: "💻" },
+    { title: "Mobile Application Development", description: "We craft high-quality, intuitive, and feature-rich mobile applications for iOS and Android, designed to engage users on the go.", icon: "📱" },
     { title: "Website Development", description: "From corporate websites to custom platforms, we create modern and responsive websites that represent your brand and help you reach more customers.", icon: "🌐" },
     { title: "UI/UX Design", description: "We design intuitive and engaging user interfaces focused on usability, accessibility, and creating meaningful digital experiences.", icon: "🎨" },
     { title: "Custom Software Solutions", description: "Every business has unique needs. We develop customized software solutions tailored to your workflow, goals, and operational requirements.", icon: "⚙️" },
@@ -69,7 +70,7 @@ export default function Services() {
         >
           <h2 className="text-3xl font-bold">Turning Ideas Into Digital Solutions</h2>
           <p className="mt-4 max-w-3xl mx-auto text-gray-200">
-            Whether you need a website, web application, or a complete digital
+            Whether you need a website, web application, mobile app, or a complete digital
             solution, our team works closely with you to transform your ideas
             into reliable and impactful technology.
           </p>
