@@ -103,7 +103,7 @@ export default function Contact() {
             <div>
               <h3 className="text-2xl font-bold text-[#071A4A] mb-6">Get In Touch</h3>
               <div className="space-y-4 text-gray-600">
-                <div className="flex items-center gap-4"><Mail className="text-[#071A4A]" /> info@liknayan.tech</div>
+                <div className="flex items-center gap-4"><Mail className="text-[#071A4A]" /> liknayantechsolutions@gmail.com</div>
                 <div className="flex items-center gap-4"><Phone className="text-[#071A4A]" /> +63 999-470-2919</div>
                 <div className="flex items-center gap-4"><MapPin className="text-[#071A4A]" /> Philippines</div>
               </div>
@@ -111,8 +111,7 @@ export default function Contact() {
             <div>
               <h3 className="text-2xl font-bold text-[#071A4A] mb-6">Availability</h3>
               <div className="space-y-4 text-gray-600">
-                <div className="flex items-center gap-4"><Clock className="text-[#071A4A]" /> Office Hours: 8:00 AM - 5:00 PM</div>
-                <div className="flex items-center gap-4"><Globe className="text-[#071A4A]" /> Online Hours: 24/7</div>
+                <div className="flex items-center gap-4"><Globe className="text-[#071A4A]" /> Available Hours: 24/7</div>
               </div>
             </div>
           </motion.div>
