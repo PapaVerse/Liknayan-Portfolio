@@ -63,9 +63,9 @@ const teamMembers = [
     role: "Front-End Developer",
     image: "/images/Drex.jpg",
     skills: {
-      Frontend: ["Skill 1", "Skill 2"],
-      Backend: ["Skill 1", "Skill 2"],
-      Tools: ["Tool 1", "Tool 2"]
+      Frontend: ["React", "Tailwind CSS", "Alpine.js", "Blade"],
+      Backend: ["PHP", "Laravel", "Node.js", "Express.js", "MySQL / SQL", "MongoDB", "Supabase"],
+      Tools: ["Git", "GitHub", "VS Code", "Vercel", "Bluehost", "phpMyAdmin"]
     },
     workHistory: [
       { 
@@ -149,13 +149,14 @@ const teamMembers = [
     ]
   },
   {
-    name: "Ciara",
-    role: "Graphic Layout Designer",
-    image: "/images/Ciara.jpg",
-    skills: {
-      Frontend: ["Skill 1", "Skill 2"],
-      Backend: ["Skill 1", "Skill 2"],
-      Tools: ["Tool 1", "Tool 2"]
+  name: "Ciara",
+      role: "Graphic Layout Designer",
+      image: "/images/Ciara.jpg",
+      skills: {
+        "Creative & Media": ["Videographer", "Video Editor", "Photographer", "Photo Editor", "Sublimation Designer"],
+        "Documentation": ["Document Controller"],
+        "Design & Tools": ["Figma", "Canva", "Photoshop", "Capcut"]
+      
     },
     workHistory: [
       { 
