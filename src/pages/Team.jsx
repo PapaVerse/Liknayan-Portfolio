@@ -3,21 +3,58 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Briefcase, Code2, Database, Wrench } from "lucide-react";
 
 const teamMembers = [
-  {
+{
     name: "Eron",
     role: "Full Stack Developer",
     image: "/images/Eron.jpg",
     skills: {
-      Frontend: ["Skill 1", "Skill 2"],
-      Backend: ["Skill 1", "Skill 2"],
-      Tools: ["Tool 1", "Tool 2"]
+      Frontend: ["React.js", "React Native", "JavaScript"],
+      Backend: ["Node.js", "PostgreSQL", "C#", "Python", "C++", "SQL"],
+      Tools: ["POSTMAN", "Microsoft Office", "Google Workspace"]
     },
     workHistory: [
       { 
-        role: "Job Title", 
-        company: "Company Name", 
-        duration: "2026 - Present", 
-        tasks: ["Task description goes here."] 
+        role: "Full Stack Developer", 
+        company: "Liknayan Tech Solution", 
+        duration: "Present", 
+        tasks: [
+          "Develop and maintain the Cavite Westpoint College website, integrating a Student Information System (SIS) and Content Management System (CMS).",
+          "Design, develop, and maintain scalable backend APIs to support web application functionality and system integrations.",
+          "Build responsive and interactive user interfaces using React.js.",
+          "Develop server-side applications with Node.js and manage relational databases using PostgreSQL.",
+          "Collaborate with the development team to implement new features, optimize application performance, and ensure system reliability."
+        ] 
+      },
+      { 
+        role: "Mobile Developer", 
+        company: "SVEN – The Digital 1st Agency", 
+        duration: "2023 - 2024", 
+        tasks: [
+          "Updated and optimized mobile applications for ToyotaPH and LexusPH.",
+          "Conducted build validation, bug checks, and implemented security features."
+        ] 
+      },
+      { 
+        role: "Software Engineer", 
+        company: "Cyberland Consultancy Ltd.", 
+        duration: "2020 - 2023", 
+        tasks: [
+          "Developed Sunbeam Place MIS, a web and mobile application for a Singapore care home, enabling centralized management of resident data, schedules, and operations.",
+          "Built mobile apps using React Native and integrated APIs for real-time data synchronization.",
+          "Designed dashboards to improve system monitoring and reporting accuracy.",
+          "Created backend APIs and tested endpoints using POSTMAN, ensuring data integrity across platforms."
+        ] 
+      },
+      { 
+        role: "Instructor", 
+        company: "Polytechnic University of the Philippines - Maragondon Campus", 
+        duration: "2020 - 2024", 
+        tasks: [
+          "Taught computer programming courses covering C++, Python, C#, JavaScript, SQL, and modern frameworks (React Native, React.js).",
+          "Designed lesson plans and practical exercises to strengthen students’ coding skills.",
+          "Guided students through software development projects and database applications.",
+          "Utilized Microsoft Office Tools (Word, Excel, PowerPoint) and Google Workspace (Sheets, Docs, Slides) for curriculum delivery and administrative tasks."
+        ] 
       }
     ]
   },
@@ -49,15 +86,15 @@ const teamMembers = [
       Tools: ["Git", "Github", "VSCode", "Figma", "Canva", "phpMyAdmin", "Vercel", "Bluehost"]
     },
     workHistory: [
-      { 
-        role: "Web Developer (Freelance)", 
-        company: "Cavite West Point College", 
-        duration: "2026 - Present", 
-        tasks: [
-          "Currently developing a comprehensive Student Information System (SIS) to digitize and centralize academic record management.",
-          "Implementing secure modules for student enrollment, grade tracking, and faculty management.",
-          "Designing a scalable database architecture to ensure data integrity and facilitate efficient information retrieval for administrative staff."
-        ] 
+      {
+      role: "Front-End Developer (Liknayan Tech Solutions)",
+      company: "Cavite West Point College",
+      duration: "2026 - Present",
+      tasks: [
+      "Managing the creation of responsive and intuitive front-end features for the comprehensive Student Information System (SIS) to digitize and centralize academic record management.",
+      "Managing the creation of secure front-end modules for student enrollment, grade tracking, and faculty management dashboards.",
+      "Managing the optimization of front-end performance and component architecture to ensure efficient data rendering and a seamless user experience for administrative staff."
+      ]
       },
       { 
         role: "Excel Automation Specialist", 
