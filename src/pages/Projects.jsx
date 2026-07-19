@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ExternalLink, Monitor, Smartphone, Clock } from "lucide-react";
 
 export default function Projects() {
@@ -14,13 +15,32 @@ export default function Projects() {
 
   const toggleView = (key, view) => setViews((prev) => ({ ...prev, [key]: view }));
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
     <section className="pt-32 min-h-screen bg-white relative overflow-hidden text-[#071A4A]">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <h1 className="text-5xl font-bold mb-16">Projects</h1>
+      <div className="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] bg-blue-200 rounded-full filter blur-[150px] opacity-30 animate-float"></div>
+      <div className="absolute bottom-[-5%] right-[-5%] w-[500px] h-[500px] bg-indigo-200 rounded-full filter blur-[150px] opacity-30 animate-float2"></div>
+
+      <motion.div 
+        className="max-w-7xl mx-auto px-6 relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <motion.h1 variants={itemVariants} className="text-5xl font-bold mb-16">Projects</motion.h1>
 
         {/* COMPLETED PROJECTS */}
-        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Completed Projects</h2>
+        <motion.h2 variants={itemVariants} className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Completed Projects</motion.h2>
         <ProjectCard title="Macro Wiring Technologies Co. Inc." desc="A corporate website transformation project that converted a static landing page into a dynamic business platform." tech={["Laravel", "MySQL", "Tailwind CSS", "Bluehost"]} link="https://www.macrowiring.com/" view={views.macro} onToggle={(v) => toggleView("macro", v)} imgDesk="/images/desktopmacro.png" imgMob="/images/mobilemacro.png" />
         <ProjectCard title="CvSU Naic BSIT Hub" desc="A website platform for BSIT students in CvSU Naic, designed for efficient access to learning materials and department resources." tech={["Next.js", "Tailwind CSS", "Supabase", "PostgreSQL"]} view={views.hub} onToggle={(v) => toggleView("hub", v)} imgDesk="/images/desktophub.png" imgMob="/images/mobilehub.png" />
         <ProjectCard title="IT Helpdesk Management System" desc="An internal company platform enabling employees to submit, track, and manage IT-related concerns through a centralized ticketing system." tech={["PHP", "Blade", "XAMPP", "MySQL"]} view={views.help} onToggle={(v) => toggleView("help", v)} imgDesk="/images/desktophelp.png" imgMob="/images/mobilehelp.png" showButton={true} btnText="Internal Company Website" />
@@ -29,8 +49,8 @@ export default function Projects() {
         <ProjectCard title="LocFinder" desc="A location finder application for easy navigation and tracking." tech={["React", "Vercel"]} link="https://loc-finder.vercel.app/" view={views.finder} onToggle={(v) => toggleView("finder", v)} imgDesk="/images/desktopfinder.png" imgMob="/images/mobilefinder.png" />
 
         {/* CURRENT DEVELOPMENT */}
-        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Current Development</h2>
-        <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
+        <motion.h2 variants={itemVariants} className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Current Development</motion.h2>
+        <motion.div variants={itemVariants} className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
           <div className="grid lg:grid-cols-2">
             <div className="p-10">
               <h2 className="text-3xl font-bold">Cavite West Point College SIS Website</h2>
@@ -47,22 +67,22 @@ export default function Projects() {
               <img src={views.cwpc === "desktop" ? "/images/desktopcwpc.png" : "/images/mobilecwpc.png"} className="w-full h-[400px] object-contain bg-white rounded-xl border border-gray-200" alt="CWPC Preview" />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* UPCOMING PROJECTS */}
-        <h2 className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Upcoming Projects</h2>
-        <div className="grid md:grid-cols-2 gap-8 pb-20">
+        <motion.h2 variants={itemVariants} className="text-[#071A4A] tracking-[5px] text-sm font-bold mb-8 uppercase">Upcoming Projects</motion.h2>
+        <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-8 pb-20">
           <ProjectCardUpcoming title="MChat Communication System" description="A secure internal communication platform featuring real-time messaging and administrative monitoring." technologies={["Laravel", "React", "MySQL", "WebSockets"]} />
           <ProjectCardUpcoming title="Future Digital Solutions" description="Additional upcoming systems focused on automation, business intelligence, and customized software." technologies={["Web Development", "Cloud", "Automation"]} />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
 
 function ProjectCard({ title, desc, tech, link, view, onToggle, imgDesk, imgMob, showButton = true, btnText = "Visit Website" }) {
   return (
-    <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
+    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl">
       <div className="grid lg:grid-cols-2">
         <div className="p-10">
           <h2 className="text-3xl font-bold">{title}</h2>
@@ -86,19 +106,19 @@ function ProjectCard({ title, desc, tech, link, view, onToggle, imgDesk, imgMob,
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function ProjectCardUpcoming({ title, description, technologies }) {
   return (
-    <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-all">
+    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} whileHover={{ y: -10 }} className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-all">
       <span className="text-[#071A4A] text-sm tracking-widest font-semibold">UPCOMING PROJECT</span>
       <h3 className="text-2xl font-bold mt-5 text-[#071A4A]">{title}</h3>
       <p className="mt-4 text-gray-600">{description}</p>
       <div className="flex flex-wrap gap-3 mt-6">
         {technologies.map(item => <span key={item} className="px-3 py-2 border border-gray-200 bg-white rounded-full text-xs text-gray-600">{item}</span>)}
       </div>
-    </div>
+    </motion.div>
   );
 }
