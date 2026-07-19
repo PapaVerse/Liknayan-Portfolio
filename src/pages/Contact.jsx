@@ -1,28 +1,31 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Globe } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Phone, MapPin, Clock, Globe, CheckCircle, XCircle } from "lucide-react";
 
 export default function Contact() {
   const form = useRef();
+  const [status, setStatus] = useState(null); // 'success', 'error', or null
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
-        "service_jpbqbr9",  // Replace with your Service ID
-        "template_1bhoie6", // Replace with your Template ID
+        "service_jpbqbr9",
+        "template_1bhoie6",
         form.current,
-        "jOz-bIaQUgIA-HeI8"   // Replace with your Public Key
+        "jOz-bIaQUgIA-HeI8"
       )
       .then(
         () => {
-          alert("Message sent successfully!");
+          setStatus('success');
           form.current.reset();
+          setTimeout(() => setStatus(null), 5000);
         },
         (error) => {
-          alert("Failed to send: " + error.text);
+          setStatus('error');
+          setTimeout(() => setStatus(null), 5000);
         }
       );
   };
@@ -39,6 +42,25 @@ export default function Contact() {
 
   return (
     <section className="pt-32 pb-20 bg-white relative overflow-hidden">
+      {/* Animated Popup Notification */}
+      <AnimatePresence>
+        {status && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className={`fixed bottom-10 right-10 z-50 p-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+              status === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+            }`}
+          >
+            {status === 'success' ? <CheckCircle /> : <XCircle />}
+            <p className="font-bold">
+              {status === 'success' ? "Message sent successfully!" : "Failed to send. Please try again."}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-blue-300 rounded-full filter blur-[120px] opacity-40 animate-float"></div>
       <div className="absolute bottom-[-10%] right-[-5%] w-96 h-96 bg-indigo-300 rounded-full filter blur-[120px] opacity-40 animate-float2"></div>
 
