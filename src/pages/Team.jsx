@@ -204,7 +204,7 @@ workHistory: [
   {
   name: "Ciara",
       role: "Graphic Layout Designer",
-      image: "/images/Ciara.jpg",
+      image: "/images/Ciara.png",
       skills: {
         "Creative & Media": ["Videographer", "Video Editor", "Photographer", "Photo Editor", "Sublimation Designer"],
         "Documentation": ["Document Controller"],
