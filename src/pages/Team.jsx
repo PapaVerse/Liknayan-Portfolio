@@ -211,14 +211,42 @@ workHistory: [
         "Design & Tools": ["Figma", "Canva", "Photoshop", "Capcut"]
       
     },
-    workHistory: [
-      { 
-        role: "Job Title", 
-        company: "Company Name", 
-        duration: "2026 - Present", 
-        tasks: ["Task description goes here."] 
-      }
-    ]
+workHistory: [
+  { 
+    role: "Document Controller / Safety Officer", 
+    company: "Macro Wiring Technologies Co Inc.", 
+    duration: "April 2025 - Present", 
+    tasks: [
+      "Managed technical and project documentation for wire harness manufacturing, ensuring accuracy, version control, and compliance with industry standards.",
+      "Maintained safety records, monitored workplace safety compliance, and supported the implementation of health and safety procedures."
+    ] 
+  },
+  { 
+    role: "Quality Control", 
+    company: "Macro Wiring Technologies Co Inc.", 
+    duration: "Sept 2024 - March 2025", 
+    tasks: [
+      "Performed quality control in wire harness production, ensuring compliance with safety and performance standards through thorough inspections of wiring, connections, insulation, and overall assembly."
+    ] 
+  },
+  { 
+    role: "Photographer / Video Editor", 
+    company: "Part-Time", 
+    duration: "Not specified", 
+    tasks: [
+      "Performed part-time video editing, photography, and photo editing, producing engaging visual content while ensuring high-quality standards and meeting project deadlines."
+    ] 
+  },
+  { 
+    role: "IT-Support Specialist (OJT)", 
+    company: "Polytechnic University of the Philippines Maragondon Campus", 
+    duration: "August 2023 - Sept 2023, March 2024 - June 2024", 
+    tasks: [
+      "Offered extensive support to address connectivity issues in campus labs and offices.",
+      "Identified and fixed computer problems to ensure everything runs smoothly."
+    ] 
+  }
+]
   }
 ];
 
