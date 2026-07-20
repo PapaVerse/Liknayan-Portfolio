@@ -115,14 +115,18 @@ workHistory: [
       "Translated texts and inputted them into the designated application for further processing."
     ] 
   },
-  { 
-    role: "Tech Support (Intern)", 
-    company: "Laboratory Office Polytechnic University of the Philippines", 
-    duration: "February 2024 - June 2024", 
-    tasks: [
-      "Provided technical support and maintenance within the laboratory office."
-    ] 
-  }
+{ 
+  role: "Tech Support (Intern)", 
+  company: "Laboratory Office Polytechnic University of the Philippines", 
+  duration: "February 2024 - June 2024", 
+  tasks: [
+    "Managed and troubleshot technical issues across various campus offices.",
+    "Maintained computer systems and servers.",
+    "Diagnosed hardware and software problems.",
+    "Set up workstations.",
+    "Assisted faculty and staff with IT-related concerns."
+  ] 
+}
 ]
   },
   {
