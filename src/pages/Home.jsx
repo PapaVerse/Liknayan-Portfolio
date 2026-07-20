@@ -1,5 +1,16 @@
-import Hero from "../components/Hero";
+import Hero from "../components/homesections/Hero";
+import ProblemSolution from "../components/homesections/ProblemSolution";
+import TestimonialSection from "../components/homesections/TestimonialSection";
+import FeaturedProjectsSection from "../components/homesections/FeaturedProjectsSection"; // Import the new section
 
 export default function Home() {
-  return <Hero />;
+  return (
+    <main>
+      <Hero />
+      <ProblemSolution />
+      {/* ...Your Services Section Component here... */}
+      <TestimonialSection />
+      <FeaturedProjectsSection /> {/* New section placed after testimonials */}
+    </main>
+  );
 }
