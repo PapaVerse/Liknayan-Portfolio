@@ -67,14 +67,63 @@ const teamMembers = [
       Backend: ["PHP", "Laravel", "Node.js", "Express.js", "MySQL / SQL", "MongoDB", "Supabase"],
       Tools: ["Git", "GitHub", "VS Code", "Vercel", "Bluehost", "phpMyAdmin"]
     },
-    workHistory: [
-      { 
-        role: "Job Title", 
-        company: "Company Name", 
-        duration: "2026 - Present", 
-        tasks: ["Task description goes here."] 
-      }
-    ]
+workHistory: [
+  { 
+    role: "Part-Time IT Instructor", 
+    company: "Cavite Westpoint College", 
+    duration: "July 2026 - Present", 
+    tasks: [
+      "Teach Information Technology courses, prepare lesson plans and instructional materials.",
+      "Conduct lectures and laboratory activities.",
+      "Assess students' performance and provide guidance to help them develop their technical knowledge and practical IT skills."
+    ] 
+  },
+  { 
+    role: "Front-End Web Developer & Co-Founder", 
+    company: "Liknayan Tech Solutions", 
+    duration: "April 2026 - Present", 
+    tasks: [
+      "Build responsive and user-centered web applications for educational institutions and businesses.",
+      "Develop interactive user interfaces, implement modern web technologies, and collaborate with designers and stakeholders.",
+      "Contribute to project planning, client relations, and the overall growth and direction of the company."
+    ] 
+  },
+  { 
+    role: "Freelance Web Developer", 
+    company: "Freelancer", 
+    duration: "September 2025 - February 2026", 
+    tasks: [
+      "Designed and developed responsive websites for clients.",
+      "Focused on creating intuitive user interfaces, implementing web functionalities, and ensuring a seamless user experience across different devices."
+    ] 
+  },
+  { 
+    role: "Front-End Web Developer / Tech Team (Intern)", 
+    company: "Polytechnic University of the Philippines", 
+    duration: "July 2022 - September 2022", 
+    tasks: [
+      "Contributed to the development of a website for PUP Alfonso Campus to support its accreditation process.",
+      "Designed and implemented user-friendly interfaces, ensured responsiveness, and optimized website performance."
+    ] 
+  },
+  { 
+    role: "Annotator", 
+    company: "Hikari Japanese Translation", 
+    duration: "May 2022 - July 2023", 
+    tasks: [
+      "Responsible for annotating Japanese texts found in various images.",
+      "Translated texts and inputted them into the designated application for further processing."
+    ] 
+  },
+  { 
+    role: "Tech Support (Intern)", 
+    company: "Laboratory Office Polytechnic University of the Philippines", 
+    duration: "February 2024 - June 2024", 
+    tasks: [
+      "Provided technical support and maintenance within the laboratory office."
+    ] 
+  }
+]
   },
   {
     name: "Val",
