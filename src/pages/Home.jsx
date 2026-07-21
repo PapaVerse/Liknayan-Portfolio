@@ -1,7 +1,8 @@
 import Hero from "../components/homesections/Hero";
 import ProblemSolution from "../components/homesections/ProblemSolution";
 import TestimonialSection from "../components/homesections/TestimonialSection";
-import FeaturedProjectsSection from "../components/homesections/FeaturedProjectsSection"; // Import the new section
+import PathToSuccessSection from "../components/homesections/PathToSuccessSection"; // Import step process
+import FeaturedProjectsSection from "../components/homesections/FeaturedProjectsSection";
 
 export default function Home() {
   return (
@@ -9,8 +10,9 @@ export default function Home() {
       <Hero />
       <ProblemSolution />
       {/* ...Your Services Section Component here... */}
+      <PathToSuccessSection /> {/* Demystifies workflow with looped animations */}
       <TestimonialSection />
-      <FeaturedProjectsSection /> {/* New section placed after testimonials */}
+      <FeaturedProjectsSection />
     </main>
   );
 }
