@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Briefcase, Code2, Database, Wrench } from "lucide-react";
+import { X, Briefcase, Code2, Database, Wrench, Sparkles, Cpu, Users } from "lucide-react";
 
 const teamMembers = [
 {
@@ -255,71 +255,140 @@ export default function Team() {
   const [isImageExpanded, setIsImageExpanded] = useState(false);
 
   return (
-    <section className="pt-32 pb-20 py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center text-[#071A4A] mb-4">Meet the Team</h2>
-        
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-16 text-lg">
-          A dedicated group of developers and automation specialists committed to building efficient, scalable, and user-centric digital solutions.
-        </p>
+    <section className="pt-32 pb-20 bg-white text-[#071A4A] relative overflow-hidden">
+      
+      {/* Background Glow Orbs to match the clean white style */}
+      <motion.div 
+        animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
+        transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
+        className="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-blue-100/60 rounded-full filter blur-[140px] pointer-events-none"
+      />
+      <motion.div 
+        animate={{ x: [0, -40, 30, 0], y: [0, 30, -30, 0] }}
+        transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
+        className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-indigo-100/60 rounded-full filter blur-[140px] pointer-events-none"
+      />
 
+      {/* Floating Background Icons */}
+      <motion.div 
+        animate={{ y: [-15, 15, -15], rotate: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+        className="absolute top-36 left-12 text-blue-400/20 pointer-events-none hidden lg:block"
+      >
+        <Sparkles size={64} />
+      </motion.div>
+      <motion.div 
+        animate={{ y: [15, -15, 15], rotate: [0, -15, 0] }}
+        transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+        className="absolute bottom-24 right-16 text-indigo-400/20 pointer-events-none hidden lg:block"
+      >
+        <Cpu size={72} />
+      </motion.div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        
+        {/* Section Heading */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4">
+            <Users size={14} /> Expert Professionals
+          </div>
+          <h2 className="text-5xl font-extrabold text-[#071A4A] tracking-tight mb-4">Meet the Team</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-base">
+            A dedicated group of developers and automation specialists committed to building efficient, scalable, and user-centric digital solutions.
+          </p>
+        </div>
+
+        {/* Team Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member) => (
-            <motion.div key={member.name} whileHover={{ y: -5 }} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-              <img src={member.image} alt={member.name} className="w-24 h-24 rounded-full object-cover mb-4" />
+            <motion.div 
+              key={member.name} 
+              whileHover={{ y: -8 }} 
+              className="bg-white/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-100 shadow-xl flex flex-col items-center text-center relative group overflow-hidden transition-all duration-300"
+            >
+              {/* Top Accent Line on Hover */}
+              <motion.div 
+                className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-150 transition-opacity"
+              />
+              
+              <div className="relative mb-4">
+                <img src={member.image} alt={member.name} className="w-24 h-24 rounded-full object-cover shadow-md border-2 border-blue-50" />
+              </div>
+
               <h3 className="text-xl font-bold text-[#071A4A]">{member.name}</h3>
-              <p className="text-sm text-gray-500 mb-6">{member.role}</p>
-              <button onClick={() => setSelectedMember(member)} className="w-full py-3 bg-[#071A4A] text-white rounded-2xl font-semibold hover:bg-blue-900 transition">View Profile</button>
+              <p className="text-xs font-semibold text-blue-600 mb-6 uppercase tracking-wider">{member.role}</p>
+              
+              <button 
+                onClick={() => setSelectedMember(member)} 
+                className="w-full mt-auto py-3 bg-[#071A4A] text-white rounded-xl font-bold text-sm hover:bg-blue-900 transition shadow-lg shadow-blue-900/10"
+              >
+                View Profile
+              </button>
             </motion.div>
           ))}
         </div>
       </div>
 
+      {/* Full Screen Profile Modal */}
       <AnimatePresence>
         {selectedMember && (
           <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
             className="fixed inset-0 bg-white z-[100] overflow-y-auto"
           >
-            <div className="max-w-4xl mx-auto p-8 md:p-16">
-              <button onClick={() => setSelectedMember(null)} className="fixed top-8 right-8 p-4 bg-gray-100 rounded-full hover:bg-gray-200 transition z-[101]">
+            <div className="max-w-4xl mx-auto p-8 md:p-16 relative">
+              <button 
+                onClick={() => setSelectedMember(null)} 
+                className="fixed top-8 right-8 p-3 bg-gray-100 hover:bg-gray-200 text-[#071A4A] rounded-full transition z-[101] shadow-md"
+              >
                 <X size={24} />
               </button>
               
               <div className="text-center mb-16">
                 <motion.img 
                   src={selectedMember.image} 
-                  animate={{ scale: isImageExpanded ? 1.2 : 1 }}
+                  animate={{ scale: isImageExpanded ? 1.15 : 1 }}
                   onClick={() => setIsImageExpanded(!isImageExpanded)}
-                  className="w-40 h-40 rounded-full mx-auto mb-6 shadow-xl cursor-pointer object-cover" 
+                  className="w-40 h-40 rounded-full mx-auto mb-6 shadow-2xl cursor-pointer object-cover border-4 border-blue-50" 
                 />
-                <h2 className="text-5xl font-bold text-[#071A4A]">{selectedMember.name}</h2>
-                <p className="text-xl text-gray-500 mt-2">{selectedMember.role}</p>
+                <h2 className="text-5xl font-extrabold text-[#071A4A]">{selectedMember.name}</h2>
+                <p className="text-lg font-semibold text-blue-600 mt-2 uppercase tracking-wide">{selectedMember.role}</p>
               </div>
 
+              {/* Skills Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                 {Object.entries(selectedMember.skills).map(([category, items]) => (
-                  <div key={category} className="bg-gray-50 p-6 rounded-2xl">
+                  <div key={category} className="bg-gray-50/80 backdrop-blur-md p-6 rounded-2xl border border-gray-100 shadow-sm">
                     <h4 className="font-bold text-[#071A4A] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-                      {category === 'Frontend' && <Code2 size={18}/>}
-                      {category === 'Backend' && <Database size={18}/>}
-                      {category === 'Tools' && <Wrench size={18}/>}
+                      {category === 'Frontend' && <Code2 size={18} className="text-blue-600"/>}
+                      {category === 'Backend' && <Database size={18} className="text-blue-600"/>}
+                      {category === 'Tools' && <Wrench size={18} className="text-blue-600"/>}
+                      {category !== 'Frontend' && category !== 'Backend' && category !== 'Tools' && <Sparkles size={18} className="text-blue-600"/>}
                       {category}
                     </h4>
                     <div className="flex flex-wrap gap-2">
-                      {items.map(s => <span key={s} className="text-xs bg-white px-3 py-1 rounded-lg border border-gray-200 text-gray-700">{s}</span>)}
+                      {items.map(s => (
+                        <span key={s} className="text-xs bg-white px-3 py-1.5 rounded-lg border border-gray-200/80 text-gray-700 font-medium shadow-2xs">
+                          {s}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 ))}
               </div>
 
-              <h4 className="text-2xl font-bold mb-8 flex items-center gap-3 text-[#071A4A]"><Briefcase size={28}/> Work Experience</h4>
+              {/* Work Experience */}
+              <h4 className="text-2xl font-bold mb-8 flex items-center gap-3 text-[#071A4A]">
+                <Briefcase size={28} className="text-blue-600"/> Work Experience
+              </h4>
               <div className="space-y-8">
                 {selectedMember.workHistory.map((job, idx) => (
-                  <div key={idx} className="border-l-4 border-[#071A4A] pl-8">
+                  <div key={idx} className="border-l-4 border-blue-600 pl-6 md:pl-8 py-1">
                     <h5 className="font-bold text-lg text-gray-900">{job.role}</h5>
-                    <p className="text-blue-600 font-semibold mb-3">{job.company} • {job.duration}</p>
-                    <ul className="list-disc text-gray-600 pl-4 space-y-2">
+                    <p className="text-blue-600 font-semibold mb-3 text-sm">{job.company} • {job.duration}</p>
+                    <ul className="list-disc text-gray-600 pl-4 space-y-2 text-sm">
                       {job.tasks.map((task, tIdx) => <li key={tIdx}>{task}</li>)}
                     </ul>
                   </div>
