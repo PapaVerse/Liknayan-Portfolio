@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import ScrollToTopButton from "../components/ScrollToTopButton";
 import ScrollToTop from "../components/ScrollToTop";
 import CookieConsent from "../components/CookieConsent"; // 1. Import it here
+import WebsiteChatbot from "../components/WebsiteChatbot";
 
 export default function MainLayout() {
   return (
@@ -18,6 +19,7 @@ export default function MainLayout() {
       <Footer />
       <ScrollToTopButton />
       <CookieConsent /> {/* 2. Add it here */}
+      <WebsiteChatbot /> {/* 3. Add it here */}
     </>
   );
 }
