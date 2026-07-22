@@ -213,6 +213,16 @@ workHistory: [
     },
 workHistory: [
   { 
+    role: "Graphic Layout Designer (Liknayan Tech Solutions)", 
+    company: "Cavite West Point College",
+      duration: "2026 - Present", 
+    tasks: [
+      "Designed and implemented clean visual layouts, brand assets, and digital graphics to elevate the company's web and software interfaces.",
+      "Produced initial UI/UX prototypes and wireframes to map out user flows and guide front-end development.",
+      "Handled project documentation and visual assets organization to ensure consistency across all brand platforms."
+    ] 
+  },
+  { 
     role: "Document Controller / Safety Officer", 
     company: "Macro Wiring Technologies Co Inc.", 
     duration: "April 2025 - Present", 
