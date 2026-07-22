@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
 
 export default function WebsiteChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [messages, setMessages] = useState([
     {
       sender: "bot",
@@ -19,6 +20,20 @@ export default function WebsiteChatbot() {
 
   const messagesEndRef = useRef(null);
 
+  // Track window scroll to compress/shrink the toggle button into an icon
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -31,12 +46,10 @@ export default function WebsiteChatbot() {
 
   // Pre-programmed tree of responses and options
   const handleOptionClick = (nextKey, label) => {
-    // 1. Append User Choice as a message
     const userMsg = { sender: "user", text: label };
     let updatedMessages = [...messages, userMsg];
     setMessages(updatedMessages);
 
-    // 2. Determine Bot Response based on the key
     setTimeout(() => {
       let botResponse = getBotResponseData(nextKey);
       setMessages((prev) => [...prev, botResponse]);
@@ -143,14 +156,34 @@ export default function WebsiteChatbot() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             onClick={() => setIsOpen(true)}
-            className="flex items-center gap-2.5 bg-[#071A4A] text-white px-5 py-3.5 rounded-full shadow-2xl border border-blue-900/50 group transition-all"
+            className={`flex items-center justify-center bg-[#071A4A] text-white shadow-2xl border border-blue-900/50 group transition-all duration-300 ${
+              isScrolled
+                ? "w-14 h-14 rounded-full p-0"
+                : "px-5 py-3.5 rounded-full gap-2.5"
+            }`}
             aria-label="Open Chatbot"
           >
             <div className="relative flex items-center justify-center">
               <span className="absolute w-3 h-3 bg-blue-500 rounded-full animate-ping opacity-75" />
-              <MessageCircle size={22} className="text-blue-400 relative z-10 group-hover:rotate-12 transition-transform" />
+              <MessageCircle
+                size={22}
+                className="text-blue-400 relative z-10 group-hover:rotate-12 transition-transform"
+              />
             </div>
-            <span className="font-bold text-sm tracking-wide">Chat with us</span>
+            
+            {/* Text smoothly hides/collapses when scrolled */}
+            <AnimatePresence>
+              {!isScrolled && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="font-bold text-sm tracking-wide overflow-hidden whitespace-nowrap"
+                >
+                  Chat with us
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.button>
         )}
       </AnimatePresence>
@@ -168,7 +201,7 @@ export default function WebsiteChatbot() {
             {/* Header */}
             <div className="bg-[#071A4A] text-white p-4 px-5 flex items-center justify-between relative overflow-hidden shrink-0">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-xl pointer-events-none" />
-              
+
               <div className="flex items-center gap-3 relative z-10">
                 <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-blue-300 shadow-inner">
                   <Bot size={22} />
@@ -208,7 +241,7 @@ export default function WebsiteChatbot() {
                         <Bot size={14} />
                       </div>
                     )}
-                    
+
                     <div
                       className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
                         msg.sender === "user"
@@ -218,7 +251,6 @@ export default function WebsiteChatbot() {
                     >
                       <p>{msg.text}</p>
 
-                      {/* Optional Bullet Lists included in Bot Messages */}
                       {msg.list && (
                         <ul className="mt-2.5 space-y-1.5 border-t border-gray-100 pt-2.5">
                           {msg.list.map((item, lIdx) => (
@@ -237,7 +269,6 @@ export default function WebsiteChatbot() {
                     )}
                   </div>
 
-                  {/* Pre-programmed Dropdown/Quick-Reply Buttons */}
                   {msg.options && (
                     <div className="flex flex-wrap gap-1.5 mt-2.5 pl-9">
                       {msg.options.map((opt, oIdx) => (
