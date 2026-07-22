@@ -40,7 +40,7 @@ export default function FeaturedProjectsSection() {
                   rel="noopener noreferrer" 
                   className="inline-flex items-center gap-2 text-[#071A4A] font-semibold hover:text-blue-700 transition-colors"
                 >
-                  View Case Study <ArrowRight size={16} />
+                  View Website <ArrowRight size={16} />
                 </a>
               </div>
             </motion.div>
