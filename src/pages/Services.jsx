@@ -139,7 +139,7 @@ export default function Services() {
         {/* Closing Section */}
         <motion.div 
           variants={itemVariants}
-          className="mt-36 mb-16 relative rounded-3xl bg-[#071A4A] px-6 py-12 md:px-14 text-white shadow-2xl overflow-visible border border-blue-900/50"
+          className="mt-36 mb-16 relative rounded-3xl bg-[#071A4A] px-6 pt-12 pb-12 md:px-14 text-white shadow-2xl overflow-visible border border-blue-900/50"
         >
           {/* Ambient Lighting Accents inside banner */}
           <div className="absolute top-0 right-0 w-96 h-60 bg-blue-500/10 rounded-full filter blur-[100px] pointer-events-none" />
@@ -161,18 +161,18 @@ export default function Services() {
               </div>
             </div>
 
-            {/* Character visible nicely on desktop, hidden or safely contained on mobile */}
-            <div className="lg:col-span-4 hidden lg:flex justify-end relative self-end">
+            {/* Responsive character container: smaller scale & centered on mobile, full desktop scaling on large screens */}
+            <div className="lg:col-span-4 flex justify-center lg:justify-end relative self-end mt-8 lg:mt-0">
               <motion.div 
                 animate={{ y: [-4, 4, -4] }}
                 transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-                className="relative w-full max-w-[260px] flex items-end"
+                className="relative w-full max-w-[180px] sm:max-w-[220px] lg:max-w-[260px] flex items-end"
               >
                 <div className="absolute inset-0 bg-blue-400/10 rounded-3xl filter blur-xl pointer-events-none"></div>
                 <img 
                   src="/images/character_4_isolated.png" 
                   alt="Liknayan Tech Solutions Representative" 
-                  className="w-full h-auto object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] relative z-30 scale-[1.75] md:scale-[1.88] origin-bottom translate-y-12 -scale-x-100"
+                  className="w-full h-auto object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] relative z-30 scale-[1.15] sm:scale-[1.3] lg:scale-[1.88] origin-bottom translate-y-6 lg:translate-y-12 -scale-x-100"
                 />
               </motion.div>
             </div>
