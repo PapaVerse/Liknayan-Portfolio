@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
 
 export default function WebsiteChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -144,47 +145,66 @@ export default function WebsiteChatbot() {
     }
   };
 
+  // If the user dismissed/removed the widget from the screen, render nothing
+  if (isDismissed) return null;
+
   return (
     <div className="fixed bottom-6 left-6 z-50 font-sans">
-      {/* Chat Toggle Button */}
+      {/* Chat Toggle Button Container */}
       <AnimatePresence>
         {!isOpen && (
-          <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={() => setIsOpen(true)}
-            className={`flex items-center justify-center bg-[#071A4A] text-white shadow-2xl border border-blue-900/50 group transition-all duration-300 ${
-              isScrolled
-                ? "w-14 h-14 rounded-full p-0"
-                : "px-5 py-3.5 rounded-full gap-2.5"
-            }`}
-            aria-label="Open Chatbot"
-          >
-            <div className="relative flex items-center justify-center">
-              <span className="absolute w-3 h-3 bg-blue-500 rounded-full animate-ping opacity-75" />
-              <MessageCircle
-                size={22}
-                className="text-blue-400 relative z-10 group-hover:rotate-12 transition-transform"
-              />
-            </div>
-            
-            {/* Text smoothly hides/collapses when scrolled */}
-            <AnimatePresence>
-              {!isScrolled && (
-                <motion.span
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={{ opacity: 0, width: 0 }}
-                  className="font-bold text-sm tracking-wide overflow-hidden whitespace-nowrap"
-                >
-                  Chat with us
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.button>
+          <div className="relative">
+            {/* Dismiss/Remove Badge Button (Always visible on top corner) */}
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              onClick={() => setIsDismissed(true)}
+              className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-gray-900 text-white hover:bg-red-600 border-2 border-white flex items-center justify-center shadow-md transition-colors"
+              title="Remove chat from screen"
+              aria-label="Remove chat from screen"
+            >
+              <X size={12} />
+            </motion.button>
+
+            {/* Main Toggle Button */}
+            <motion.button
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsOpen(true)}
+              className={`flex items-center justify-center bg-[#071A4A] text-white shadow-2xl border border-blue-900/50 group transition-all duration-300 ${
+                isScrolled
+                  ? "w-14 h-14 rounded-full p-0"
+                  : "px-5 py-3.5 rounded-full gap-2.5"
+              }`}
+              aria-label="Open Chatbot"
+            >
+              <div className="relative flex items-center justify-center shrink-0">
+                <span className="absolute w-3 h-3 bg-blue-500 rounded-full animate-ping opacity-75" />
+                <MessageCircle
+                  size={22}
+                  className="text-blue-400 relative z-10 group-hover:rotate-12 transition-transform"
+                />
+              </div>
+
+              {/* Text collapses smoothly when scrolled */}
+              <AnimatePresence>
+                {!isScrolled && (
+                  <motion.span
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    className="font-bold text-sm tracking-wide overflow-hidden whitespace-nowrap text-left"
+                  >
+                    Chat with us
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         )}
       </AnimatePresence>
 
@@ -217,13 +237,15 @@ export default function WebsiteChatbot() {
                 </div>
               </div>
 
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors relative z-10"
-                aria-label="Close Chat"
-              >
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-1.5 relative z-10">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                  aria-label="Minimize Chat"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             {/* Chat Messages Feed */}
