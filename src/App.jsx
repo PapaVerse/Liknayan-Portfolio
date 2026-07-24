@@ -30,8 +30,8 @@ export default function App() {
       </Route>
 
       {/* Secret Admin Routes */}
-      <Route path="/login" element={<LoginPage supabase={supabase} />} />
-      <Route path="/admin" element={<AdminPage supabase={supabase} />} />
+      <Route path="/loginpage" element={<LoginPage supabase={supabase} />} />
+      <Route path="/CMSadmin" element={<AdminPage supabase={supabase} />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

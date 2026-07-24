@@ -38,7 +38,7 @@ export default function LoginPage({ supabase }) {
       }
 
       // Successful login and verified admin role
-      navigate("/admin");
+      navigate("/CMSadmin");
     } catch (err) {
       setError(err.message || "Failed to log in. Please check your credentials.");
     } finally {

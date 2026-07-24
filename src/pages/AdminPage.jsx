@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FileText, LogOut, Send, CheckCircle2, Trash2, Edit3, X, Image as ImageIcon } from "lucide-react";
+import { FileText, LogOut, Send, CheckCircle2, Trash2, Edit3, X, Image as ImageIcon, Loader2, AlertTriangle } from "lucide-react";
 
 export default function AdminPage({ supabase }) {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState(null);
+  const [toastType, setToastType] = useState("success"); // "loading", "success", "error"
   const [posts, setPosts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  
+  // Custom delete confirmation modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [postToDeleteId, setPostToDeleteId] = useState(null);
+
   const navigate = useNavigate();
 
   // Post form state
@@ -20,6 +26,16 @@ export default function AdminPage({ supabase }) {
     checkAdminSession();
     fetchPosts();
   }, []);
+
+  const showToast = (message, type = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    if (type !== "loading") {
+      setTimeout(() => {
+        setToastMessage(null);
+      }, 4000);
+    }
+  };
 
   const checkAdminSession = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -56,7 +72,7 @@ export default function AdminPage({ supabase }) {
   const handleSavePost = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    showToast(editingId ? "Updating post..." : "Publishing post...", "loading");
 
     try {
       let mediaUrl = existingMediaUrl;
@@ -91,7 +107,7 @@ export default function AdminPage({ supabase }) {
           .eq("id", editingId);
 
         if (error) throw error;
-        setMessage("Post updated successfully!");
+        showToast("Post updated successfully!", "success");
       } else {
         // Create new post
         const { error } = await supabase.from("updates").insert([
@@ -105,13 +121,13 @@ export default function AdminPage({ supabase }) {
         ]);
 
         if (error) throw error;
-        setMessage("Post published successfully!");
+        showToast("Post published successfully!", "success");
       }
 
       resetForm();
       fetchPosts();
     } catch (err) {
-      setMessage(`Error: ${err.message}`);
+      showToast(`Error: ${err.message}`, "error");
     } finally {
       setLoading(false);
     }
@@ -127,19 +143,28 @@ export default function AdminPage({ supabase }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDeletePost = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this post?")) return;
-    
+  const confirmDeleteClick = (id) => {
+    setPostToDeleteId(id);
+    setDeleteModalOpen(true);
+  };
+
+  const executeDeletePost = async () => {
+    if (!postToDeleteId) return;
+
+    setDeleteModalOpen(false);
     setLoading(true);
+    showToast("Deleting post...", "loading");
+    
     try {
-      const { error } = await supabase.from("updates").delete().eq("id", id);
+      const { error } = await supabase.from("updates").delete().eq("id", postToDeleteId);
       if (error) throw error;
-      setMessage("Post deleted successfully!");
+      showToast("Post deleted successfully!", "success");
       fetchPosts();
     } catch (err) {
-      setMessage(`Error: ${err.message}`);
+      showToast(`Error: ${err.message}`, "error");
     } finally {
       setLoading(false);
+      setPostToDeleteId(null);
     }
   };
 
@@ -153,14 +178,17 @@ export default function AdminPage({ supabase }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-16 px-6 text-[#071A4A]">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50 pt-4 pb-16 px-6 text-[#071A4A]">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Top Header */}
+        {/* Top Header with Logo */}
         <div className="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div>
-            <h1 className="text-2xl font-extrabold">Admin Control Center</h1>
-            <p className="text-gray-500 text-sm">Manage updates, announcements, and media attachments</p>
+          <div className="flex items-center gap-4">
+            <img src="/LIKNAYAN.png" alt="Liknayan Logo" className="h-10 w-auto object-contain" />
+            <div>
+              <h1 className="text-2xl font-extrabold">Admin Control Center</h1>
+              <p className="text-gray-500 text-sm">Manage updates, announcements, and media attachments</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
@@ -170,23 +198,67 @@ export default function AdminPage({ supabase }) {
           </button>
         </div>
 
-        {/* Feedback Message */}
-        {message && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-center gap-3 text-blue-700 text-sm">
-            <CheckCircle2 size={18} className="shrink-0" />
-            <span>{message}</span>
+        {/* Popup Floating Notification Toast */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 animate-bounce">
+            <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl border text-sm font-medium ${
+              toastType === "loading" ? "bg-blue-600 text-white border-blue-500" :
+              toastType === "success" ? "bg-emerald-600 text-white border-emerald-500" :
+              "bg-red-600 text-white border-red-500"
+            }`}>
+              {toastType === "loading" ? (
+                <Loader2 size={18} className="animate-spin shrink-0" />
+              ) : (
+                <CheckCircle2 size={18} className="shrink-0" />
+              )}
+              <span>{toastMessage}</span>
+            </div>
           </div>
         )}
 
-        {/* Main Content Card */}
-        <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-          <div>
-            {/* Form Section */}
-            <form onSubmit={handleSavePost} className="space-y-6 pb-8 border-b border-gray-100">
+        {/* Custom Delete Confirmation Modal */}
+        {deleteModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-200">
+              <div className="flex items-center gap-3 text-red-600 mb-3">
+                <div className="p-3 bg-red-50 rounded-xl">
+                  <AlertTriangle size={24} />
+                </div>
+                <h3 className="text-lg font-bold text-[#071A4A]">Delete Confirmation</h3>
+              </div>
+              <p className="text-gray-600 text-sm mb-6">
+                Are you sure you want to delete this post? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeleteModalOpen(false)}
+                  className="px-4 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl text-sm hover:bg-gray-200 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={executeDeletePost}
+                  className="px-5 py-2.5 bg-red-600 text-white font-semibold rounded-xl text-sm hover:bg-red-700 transition shadow-lg shadow-red-600/20"
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content Section - Side by Side Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Side: Creation / Editing Form Container */}
+          <div className="lg:col-span-5 bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 sticky top-24">
+            <form onSubmit={handleSavePost} className="space-y-5">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold flex items-center gap-2">
-                  <FileText size={20} className="text-blue-600" />
-                  {editingId ? "Edit Update / Announcement" : "Create New Update / Announcement"}
+                <h2 className="text-lg font-bold flex items-center gap-2">
+                  <FileText size={18} className="text-blue-600" />
+                  {editingId ? "Edit Update" : "Create New Update"}
                 </h2>
                 {editingId && (
                   <button
@@ -194,29 +266,29 @@ export default function AdminPage({ supabase }) {
                     onClick={resetForm}
                     className="text-xs text-red-500 flex items-center gap-1 font-semibold hover:underline"
                   >
-                    <X size={14} /> Cancel Editing
+                    <X size={14} /> Cancel
                   </button>
                 )}
               </div>
               
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Title</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">Title</label>
                 <input
                   type="text"
                   required
                   value={postTitle}
                   onChange={(e) => setPostTitle(e.target.value)}
                   placeholder="e.g., Version 2.0 Released"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Category</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">Category</label>
                 <select
                   value={postCategory}
                   onChange={(e) => setPostCategory(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
                 >
                   <option value="Announcement">Announcement</option>
                   <option value="News">News</option>
@@ -225,99 +297,101 @@ export default function AdminPage({ supabase }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">Content</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">Content</label>
                 <textarea
                   required
-                  rows={6}
+                  rows={5}
                   value={postContent}
                   onChange={(e) => setPostContent(e.target.value)}
                   placeholder="Write your update details here..."
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-600 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-1.5">
                   Attach Image or Video (Optional)
                 </label>
-                <div className="flex items-center gap-4">
-                  <input
-                    type="file"
-                    accept="image/*,video/*"
-                    onChange={(e) => setMediaFile(e.target.files[0])}
-                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition"
-                  />
-                </div>
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  onChange={(e) => setMediaFile(e.target.files[0])}
+                  className="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition"
+                />
                 {existingMediaUrl && !mediaFile && (
-                  <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                    <ImageIcon size={14} /> Current attachment exists. Uploading a new file will replace it.
+                  <p className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                    <ImageIcon size={12} /> Attachment exists. Uploading a new one replaces it.
                   </p>
                 )}
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-8 py-3.5 bg-blue-600 text-white font-semibold rounded-xl text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-600/20 flex items-center gap-2 disabled:opacity-50"
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  <Send size={16} /> {loading ? "Saving..." : editingId ? "Update Post" : "Publish Post"}
+                  {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />} 
+                  {loading ? "Processing..." : editingId ? "Update Post" : "Publish Post"}
                 </button>
                 {editingId && (
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="px-6 py-3.5 bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm hover:bg-gray-300 transition"
+                    className="px-4 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm hover:bg-gray-300 transition"
                   >
                     Cancel
                   </button>
                 )}
               </div>
             </form>
-
-            {/* List of Existing Posts for Management */}
-            <div className="mt-8">
-              <h3 className="text-lg font-bold mb-4">Existing Posts ({posts.length})</h3>
-              {posts.length === 0 ? (
-                <p className="text-gray-500 text-sm">No posts found.</p>
-              ) : (
-                <div className="space-y-4">
-                  {posts.map((post) => (
-                    <div key={post.id} className="p-4 bg-gray-50 border border-gray-100 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md">
-                            {post.category}
-                          </span>
-                          <span className="text-xs text-gray-400">
-                            {new Date(post.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <h4 className="font-bold text-base">{post.title}</h4>
-                        <p className="text-gray-600 text-xs line-clamp-1">{post.content}</p>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <button
-                          onClick={() => handleEditClick(post)}
-                          className="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"
-                          title="Edit Post"
-                        >
-                          <Edit3 size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleDeletePost(post.id)}
-                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"
-                          title="Delete Post"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
+
+          {/* Right Side: Existing Posts Management Container */}
+          <div className="lg:col-span-7 bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
+            <h3 className="text-lg font-bold mb-4">Existing Posts ({posts.length})</h3>
+            {posts.length === 0 ? (
+              <p className="text-gray-500 text-sm py-8 text-center bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                No posts found. Create your first announcement on the left!
+              </p>
+            ) : (
+              <div className="space-y-4 max-h-[650px] overflow-y-auto pr-1">
+                {posts.map((post) => (
+                  <div key={post.id} className="p-4 bg-gray-50 border border-gray-100 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-blue-200 transition">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md">
+                          {post.category}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(post.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <h4 className="font-bold text-sm text-[#071A4A]">{post.title}</h4>
+                      <p className="text-gray-600 text-xs line-clamp-1">{post.content}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => handleEditClick(post)}
+                        className="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition"
+                        title="Edit Post"
+                      >
+                        <Edit3 size={15} />
+                      </button>
+                      <button
+                        onClick={() => confirmDeleteClick(post.id)}
+                        className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"
+                        title="Delete Post"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
 
       </div>
