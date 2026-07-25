@@ -5,6 +5,7 @@ import TestimonialSection from "../components/homesections/TestimonialSection";
 import FeaturedProjectsSection from "../components/homesections/FeaturedProjectsSection";
 import LatestUpdateHome from "../components/homesections/LatestUpdateHome"; // Import it here
 import { supabase } from "../supabaseClient"; // Adjust path to your supabase client if needed
+import TechStackSection from "../components/homesections/TechStackSection";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       {/* ...Your Services Section Component here... */}
       <PathToSuccessSection />
       <TestimonialSection />
+      <TechStackSection />
       <FeaturedProjectsSection />
 
     </main>
