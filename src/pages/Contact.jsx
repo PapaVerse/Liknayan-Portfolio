@@ -42,7 +42,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="pt-32 pb-20 bg-white text-[#071A4A] relative overflow-hidden">
+    <section className="pt-32 pb-24 bg-white text-[#071A4A] relative overflow-hidden">
       
       {/* Animated Popup Notification */}
       <AnimatePresence>
@@ -51,7 +51,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className={`fixed bottom-10 right-10 z-50 p-4 rounded-xl shadow-2xl flex items-center gap-3 border ${
+            className={`fixed bottom-10 right-10 z-50 p-4 rounded-2xl shadow-2xl flex items-center gap-3 border ${
               status === 'loading'
                 ? 'bg-blue-600 border-blue-500 text-white'
                 : status === 'success' 
@@ -75,12 +75,12 @@ export default function Contact() {
       <motion.div 
         animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
         transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
-        className="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-blue-200/50 rounded-full filter blur-[140px] pointer-events-none"
+        className="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-blue-100/60 rounded-full filter blur-[140px] pointer-events-none"
       />
       <motion.div 
         animate={{ x: [0, -40, 30, 0], y: [0, 30, -30, 0] }}
         transition={{ repeat: Infinity, duration: 15, ease: "easeInOut" }}
-        className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-indigo-200/50 rounded-full filter blur-[140px] pointer-events-none"
+        className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-indigo-100/60 rounded-full filter blur-[140px] pointer-events-none"
       />
 
       {/* Floating Animated Icons in Background */}
@@ -106,16 +106,19 @@ export default function Contact() {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <div className="text-center mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4 shadow-xs"
           >
             <MessageSquare size={14} /> Get in Touch
           </motion.div>
-          <motion.h1 variants={itemVariants} className="text-5xl font-extrabold text-[#071A4A] tracking-tight">
+          <motion.h1 variants={itemVariants} className="text-5xl font-extrabold text-[#071A4A] tracking-tight mb-4">
             Contact Us
           </motion.h1>
+          <motion.p variants={itemVariants} className="text-gray-600 text-base leading-relaxed">
+            Have a project in mind or want to learn more? Reach out and we'll get back to you shortly.
+          </motion.p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
@@ -125,13 +128,13 @@ export default function Contact() {
             ref={form} 
             onSubmit={sendEmail} 
             variants={itemVariants} 
-            className="space-y-6 bg-white/80 backdrop-blur-xl p-8 rounded-2xl border border-gray-100 shadow-xl relative group overflow-hidden"
+            className="space-y-6 bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-gray-100 shadow-xl relative group overflow-hidden"
           >
             {/* Animated Top Border Line */}
             <motion.div 
-              className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
             />
 
             <div>
@@ -141,7 +144,7 @@ export default function Contact() {
               <input 
                 type="text" 
                 name="name" 
-                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#071A4A] transition text-sm" 
+                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition text-sm" 
                 placeholder="Your name" 
                 required 
               />
@@ -154,7 +157,7 @@ export default function Contact() {
               <input 
                 type="email" 
                 name="email" 
-                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#071A4A] transition text-sm" 
+                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition text-sm" 
                 placeholder="your@email.com" 
                 required 
               />
@@ -167,7 +170,7 @@ export default function Contact() {
               <textarea 
                 name="message" 
                 rows="4" 
-                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#071A4A] transition text-sm resize-none" 
+                className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition text-sm resize-none" 
                 placeholder="How can we help you?" 
                 required
               ></textarea>
@@ -186,17 +189,18 @@ export default function Contact() {
           {/* Info Side with Moving Icons & Details */}
           <motion.div variants={itemVariants} className="space-y-8 lg:pl-6">
             
-            <div className="bg-gray-50/80 backdrop-blur-md p-8 rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden">
+            <div className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-gray-100 shadow-xl relative overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500" />
               <h3 className="text-xl font-bold text-[#071A4A] mb-6">
                 Get In Touch
               </h3>
               
-              <div className="space-y-6 text-gray-600 text-sm">
+              <div className="space-y-4 text-gray-600 text-sm">
                 <motion.div 
                   whileHover={{ x: 6 }} 
-                  className="flex items-center gap-4 p-3 rounded-xl bg-white border border-gray-200/60 transition-all shadow-sm"
+                  className="flex items-center gap-4 p-3.5 rounded-2xl bg-gray-50/80 border border-gray-200/60 transition-all shadow-xs"
                 >
-                  <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600">
                     <Mail size={18} />
                   </div>
                   <span className="font-medium text-gray-800">liknayantechsolutions@gmail.com</span>
@@ -204,9 +208,9 @@ export default function Contact() {
 
                 <motion.div 
                   whileHover={{ x: 6 }} 
-                  className="flex items-center gap-4 p-3 rounded-xl bg-white border border-gray-200/60 transition-all shadow-sm"
+                  className="flex items-center gap-4 p-3.5 rounded-2xl bg-gray-50/80 border border-gray-200/60 transition-all shadow-xs"
                 >
-                  <div className="p-2.5 rounded-lg bg-indigo-50 text-indigo-600">
+                  <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
                     <Phone size={18} />
                   </div>
                   <span className="font-medium text-gray-800">+63 999-470-2919</span>
@@ -214,9 +218,9 @@ export default function Contact() {
 
                 <motion.div 
                   whileHover={{ x: 6 }} 
-                  className="flex items-center gap-4 p-3 rounded-xl bg-white border border-gray-200/60 transition-all shadow-sm"
+                  className="flex items-center gap-4 p-3.5 rounded-2xl bg-gray-50/80 border border-gray-200/60 transition-all shadow-xs"
                 >
-                  <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600">
+                  <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600">
                     <MapPin size={18} />
                   </div>
                   <span className="font-medium text-gray-800">Philippines</span>
@@ -224,12 +228,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-gray-50/80 backdrop-blur-md p-8 rounded-2xl border border-gray-100 shadow-sm">
+            <div className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl border border-gray-100 shadow-xl relative overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500" />
               <h3 className="text-xl font-bold text-[#071A4A] mb-6">
                 Availability
               </h3>
               
-              <div className="flex items-center gap-4 p-3 rounded-xl bg-white border border-gray-200/60 shadow-sm text-sm">
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50/80 border border-gray-200/60 shadow-xs text-sm">
                 <div className="relative flex items-center justify-center p-2.5">
                   {/* Pulsing indicator dot */}
                   <span className="absolute w-3 h-3 bg-green-500 rounded-full animate-ping opacity-75" />

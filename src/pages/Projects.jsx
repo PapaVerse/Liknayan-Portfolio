@@ -26,9 +26,9 @@ export default function Projects() {
   };
 
   return (
-    <section className="pt-32 pb-20 min-h-screen bg-white relative overflow-hidden text-[#071A4A]">
+    <section className="pt-32 pb-24 min-h-screen bg-white relative overflow-hidden text-[#071A4A]">
       
-      {/* Background Glow Orbs matching the Team section style */}
+      {/* Background Glow Orbs */}
       <motion.div 
         animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
         transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
@@ -64,12 +64,12 @@ export default function Projects() {
         viewport={{ once: true }}
       >
         {/* Section Heading */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold uppercase tracking-wider mb-4 shadow-xs">
             <FolderGit2 size={14} /> Portfolio Works
           </div>
           <motion.h1 variants={itemVariants} className="text-5xl font-extrabold text-[#071A4A] tracking-tight mb-4">Projects</motion.h1>
-          <p className="text-gray-600 max-w-2xl mx-auto text-base">
+          <p className="text-gray-600 text-base leading-relaxed">
             Explore our curated collection of deployed web apps, platforms, APIs, and active development milestones.
           </p>
         </div>
@@ -91,16 +91,16 @@ export default function Projects() {
           <span className="w-8 h-[2px] bg-blue-600"></span> Current Development
         </motion.h2>
         
-        <motion.div variants={itemVariants} className="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-2xl overflow-hidden mb-16 shadow-xl relative group">
-          <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-xl border border-gray-100 rounded-3xl overflow-hidden mb-16 shadow-xl relative group">
+          <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500" />
           <div className="grid lg:grid-cols-2">
             <div className="p-8 md:p-10 flex flex-col justify-center">
               <span className="text-xs font-semibold text-blue-600 mb-2 uppercase tracking-wider">Active Project</span>
               <h2 className="text-3xl font-bold text-[#071A4A]">Cavite West Point College SIS Website</h2>
               <p className="mt-4 text-gray-600 leading-relaxed">A complete Student Information System and institutional website solution currently being developed.</p>
               <div className="flex flex-wrap gap-2 mt-6">
-                <span className="px-3.5 py-1.5 border border-gray-200/80 rounded-lg text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">SIS Integration</span>
-                <span className="px-3.5 py-1.5 border border-gray-200/80 rounded-lg text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">Web Platform</span>
+                <span className="px-3.5 py-1.5 border border-gray-200/80 rounded-xl text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">SIS Integration</span>
+                <span className="px-3.5 py-1.5 border border-gray-200/80 rounded-xl text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">Web Platform</span>
               </div>
               <button disabled className="inline-flex items-center gap-2 mt-8 px-5 py-3 rounded-xl border border-blue-200 text-blue-700 font-semibold bg-blue-50/50 cursor-not-allowed w-fit text-sm">
                 <Clock size={18}/> On-Going Development
@@ -111,7 +111,7 @@ export default function Projects() {
                 <button onClick={() => toggleView("cwpc", "desktop")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition shadow-2xs ${views.cwpc === "desktop" ? "border-blue-600 text-blue-600 bg-white shadow-xs" : "border-gray-200 text-gray-500 bg-white/50"}`}><Monitor size={16}/> Desktop</button>
                 <button onClick={() => toggleView("cwpc", "mobile")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition shadow-2xs ${views.cwpc === "mobile" ? "border-blue-600 text-blue-600 bg-white shadow-xs" : "border-gray-200 text-gray-500 bg-white/50"}`}><Smartphone size={16}/> Mobile</button>
               </div>
-              <div className="h-[380px] w-full relative overflow-hidden rounded-xl border border-gray-200/80 shadow-md bg-white">
+              <div className="h-[380px] w-full relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-md bg-white">
                 <img src={views.cwpc === "desktop" ? "/images/desktopcwpc.png" : "/images/mobilecwpc.png"} className="w-full h-full object-contain" alt="CWPC Preview" />
               </div>
             </div>
@@ -136,16 +136,16 @@ function ProjectCard({ title, desc, tech, link, view, onToggle, imgDesk, imgMob,
   return (
     <motion.div 
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} 
-      className="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-2xl overflow-hidden mb-12 shadow-xl relative group"
+      className="bg-white/90 backdrop-blur-xl border border-gray-100 rounded-3xl overflow-hidden mb-12 shadow-xl relative group"
     >
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500" />
       <div className="grid lg:grid-cols-2">
         <div className="p-8 md:p-10 flex flex-col justify-between">
           <div>
             <h2 className="text-3xl font-bold text-[#071A4A]">{title}</h2>
             <p className="mt-4 text-gray-600 leading-relaxed text-sm md:text-base">{desc}</p>
             <div className="flex flex-wrap gap-2 mt-6">
-              {tech.map((t) => <span key={t} className="px-3.5 py-1.5 border border-gray-200/80 rounded-lg text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">{t}</span>)}
+              {tech.map((t) => <span key={t} className="px-3.5 py-1.5 border border-gray-200/80 rounded-xl text-xs font-medium text-gray-700 bg-gray-50/80 shadow-2xs">{t}</span>)}
             </div>
           </div>
           {showButton && (
@@ -161,7 +161,7 @@ function ProjectCard({ title, desc, tech, link, view, onToggle, imgDesk, imgMob,
             <button onClick={() => onToggle("desktop")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition shadow-2xs ${view === "desktop" ? "border-blue-600 text-blue-600 bg-white shadow-xs" : "border-gray-200 text-gray-500 bg-white/50"}`}><Monitor size={16} /> Desktop</button>
             <button onClick={() => onToggle("mobile")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition shadow-2xs ${view === "mobile" ? "border-blue-600 text-blue-600 bg-white shadow-xs" : "border-gray-200 text-gray-500 bg-white/50"}`}><Smartphone size={16} /> Mobile</button>
           </div>
-          <div className="h-[380px] w-full relative overflow-hidden rounded-xl border border-gray-200/80 shadow-md bg-white">
+          <div className="h-[380px] w-full relative overflow-hidden rounded-2xl border border-gray-200/80 shadow-md bg-white">
             <img src={view === "desktop" ? imgDesk : imgMob} className="w-full h-full object-contain" alt="Project Preview" />
           </div>
         </div>
@@ -175,14 +175,14 @@ function ProjectCardUpcoming({ title, description, technologies }) {
     <motion.div 
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} 
       whileHover={{ y: -6 }} 
-      className="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-2xl p-8 shadow-xl transition-all relative group overflow-hidden"
+      className="bg-white/90 backdrop-blur-xl border border-gray-100 rounded-3xl p-8 shadow-xl transition-all relative group overflow-hidden"
     >
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-500" />
       <span className="text-blue-600 text-xs font-semibold tracking-wider uppercase">Upcoming Project</span>
       <h3 className="text-2xl font-bold mt-3 text-[#071A4A]">{title}</h3>
       <p className="mt-3 text-gray-600 text-sm leading-relaxed">{description}</p>
       <div className="flex flex-wrap gap-2 mt-6">
-        {technologies.map(item => <span key={item} className="px-3.5 py-1.5 border border-gray-200/80 bg-gray-50/80 rounded-lg text-xs font-medium text-gray-700 shadow-2xs">{item}</span>)}
+        {technologies.map(item => <span key={item} className="px-3.5 py-1.5 border border-gray-200/80 bg-gray-50/80 rounded-xl text-xs font-medium text-gray-700 shadow-2xs">{item}</span>)}
       </div>
     </motion.div>
   );

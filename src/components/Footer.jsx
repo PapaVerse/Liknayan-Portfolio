@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin, Sparkles, Code2, Cpu, ShieldCheck, X, Lock, FileText, Eye, CheckCircle2 } from "lucide-react";
+import { Mail, Phone, MapPin, Sparkles, Code2, Cpu, ShieldCheck, X, Lock, FileText, CheckCircle2 } from "lucide-react";
 import { FaFacebookF } from "react-icons/fa";
 
 export default function Footer() {
@@ -55,7 +55,7 @@ export default function Footer() {
             {/* Company Info */}
             <div>
               <div className="flex items-center gap-3">
-                <div className="bg-white rounded-xl p-2.5 shadow-lg shadow-blue-950/50">
+                <div className="bg-white rounded-2xl p-2.5 shadow-lg shadow-blue-950/50">
                   <img
                     src="/LIKNAYAN.png"
                     alt="Liknayan Logo"
@@ -80,7 +80,7 @@ export default function Footer() {
               <motion.div 
                 animate={{ y: [-4, 4, -4] }}
                 transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                className="inline-flex items-center gap-2 mt-6 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-blue-200 shadow-sm"
+                className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs text-blue-200 shadow-sm"
               >
                 <Cpu size={14} className="text-blue-400 animate-pulse" /> Global Tech Team (UK & PH)
               </motion.div>
@@ -112,21 +112,21 @@ export default function Footer() {
               </h3>
               <div className="space-y-3.5 text-gray-300 text-sm">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
                     <Mail size={15} />
                   </div>
                   <span className="truncate">liknayantechsolutions@gmail.com</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
                     <Phone size={15} />
                   </div>
                   <span>+63 999-470-2919</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 shrink-0">
                     <MapPin size={15} />
                   </div>
                   <span>Philippines</span>
