@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Sparkles, ArrowRight, ExternalLink, RefreshCw } from "lucide-react";
 
 export default function WebsiteChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(1);
   const [messages, setMessages] = useState([
     {
       sender: "bot",
@@ -42,19 +44,21 @@ export default function WebsiteChatbot() {
   useEffect(() => {
     if (isOpen) {
       scrollToBottom();
+      setUnreadCount(0);
     }
   }, [messages, isOpen]);
 
-  // Pre-programmed tree of responses and options
+  // Pre-programmed tree of responses and options with typing delay effect
   const handleOptionClick = (nextKey, label) => {
     const userMsg = { sender: "user", text: label };
-    let updatedMessages = [...messages, userMsg];
-    setMessages(updatedMessages);
+    setMessages((prev) => [...prev, userMsg]);
+    setIsTyping(true);
 
     setTimeout(() => {
       let botResponse = getBotResponseData(nextKey);
+      setIsTyping(false);
       setMessages((prev) => [...prev, botResponse]);
-    }, 400);
+    }, 800);
   };
 
   const getBotResponseData = (key) => {
@@ -145,7 +149,6 @@ export default function WebsiteChatbot() {
     }
   };
 
-  // If the user dismissed/removed the widget from the screen, render nothing
   if (isDismissed) return null;
 
   return (
@@ -154,7 +157,7 @@ export default function WebsiteChatbot() {
       <AnimatePresence>
         {!isOpen && (
           <div className="relative">
-            {/* Dismiss/Remove Badge Button (Always visible on top corner) */}
+            {/* Dismiss/Remove Badge Button */}
             <motion.button
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -167,26 +170,43 @@ export default function WebsiteChatbot() {
               <X size={12} />
             </motion.button>
 
-            {/* Main Toggle Button */}
+            {/* Unread Notification Badge */}
+            {unreadCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-1 -left-1 z-20 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border-2 border-white animate-bounce"
+              >
+                {unreadCount}
+              </motion.span>
+            )}
+
+            {/* Main Toggle Button with Gradient Glow */}
             <motion.button
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(true)}
-              className={`flex items-center justify-center bg-[#071A4A] text-white shadow-2xl border border-blue-900/50 group transition-all duration-300 ${
+              onClick={() => {
+                setIsOpen(true);
+                setUnreadCount(0);
+              }}
+              className={`relative flex items-center justify-center bg-gradient-to-br from-[#071A4A] via-[#0d2a75] to-[#1e3a8a] text-white shadow-2xl border border-blue-400/30 group transition-all duration-300 overflow-hidden ${
                 isScrolled
                   ? "w-14 h-14 rounded-full p-0"
                   : "px-5 py-3.5 rounded-full gap-2.5"
               }`}
               aria-label="Open Chatbot"
             >
+              {/* Subtle shining background flare */}
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
               <div className="relative flex items-center justify-center shrink-0">
-                <span className="absolute w-3 h-3 bg-blue-500 rounded-full animate-ping opacity-75" />
+                <span className="absolute w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-60" />
                 <MessageCircle
-                  size={22}
-                  className="text-blue-400 relative z-10 group-hover:rotate-12 transition-transform"
+                  size={24}
+                  className="text-blue-300 relative z-10 group-hover:rotate-12 transition-transform"
                 />
               </div>
 
@@ -197,9 +217,10 @@ export default function WebsiteChatbot() {
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "auto" }}
                     exit={{ opacity: 0, width: 0 }}
-                    className="font-bold text-sm tracking-wide overflow-hidden whitespace-nowrap text-left"
+                    className="font-bold text-sm tracking-wide overflow-hidden whitespace-nowrap text-left relative z-10 flex items-center gap-1.5"
                   >
-                    Chat with us
+                    <span>Chat with us</span>
+                    <Sparkles size={13} className="text-blue-300 animate-pulse" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -212,32 +233,53 @@ export default function WebsiteChatbot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 25, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-[90vw] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden text-[#071A4A]"
+            exit={{ opacity: 0, y: 25, scale: 0.92 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="w-[92vw] sm:w-[400px] h-[550px] bg-white rounded-3xl shadow-2xl border border-blue-100 flex flex-col overflow-hidden text-[#071A4A] relative"
           >
             {/* Header */}
-            <div className="bg-[#071A4A] text-white p-4 px-5 flex items-center justify-between relative overflow-hidden shrink-0">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-xl pointer-events-none" />
+            <div className="bg-gradient-to-r from-[#071A4A] via-[#0c235c] to-[#071A4A] text-white p-4 px-5 flex items-center justify-between relative overflow-hidden shrink-0 shadow-md">
+              <div className="absolute -top-10 -right-10 w-36 h-36 bg-blue-500/30 rounded-full blur-2xl pointer-events-none" />
 
               <div className="flex items-center gap-3 relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-blue-300 shadow-inner">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-blue-300 shadow-inner">
                   <Bot size={22} />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm tracking-wide flex items-center gap-1.5">
-                    Liknayan Assistant <Sparkles size={13} className="text-blue-400" />
+                    Liknayan Assistant <Sparkles size={13} className="text-blue-300 animate-pulse" />
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">Online 24/7</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400" />
+                    <span className="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">Active & Online</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-1.5 relative z-10">
+                <button
+                  onClick={() => {
+                    setMessages([
+                      {
+                        sender: "bot",
+                        text: "👋 Welcome back! How else can we help you today?",
+                        options: [
+                          { label: "🛠️ What are your services?", next: "services" },
+                          { label: "💻 Show me your portfolio/projects", next: "projects" },
+                          { label: "👥 Who is on your team?", next: "team" },
+                          { label: "📞 How can I contact you?", next: "contact" },
+                        ],
+                      },
+                    ]);
+                  }}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                  title="Restart Conversation"
+                  aria-label="Restart Conversation"
+                >
+                  <RefreshCw size={14} />
+                </button>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
@@ -249,69 +291,101 @@ export default function WebsiteChatbot() {
             </div>
 
             {/* Chat Messages Feed */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50/50 custom-scrollbar">
+            <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gradient-to-b from-slate-50/70 to-blue-50/30 custom-scrollbar">
               {messages.map((msg, index) => (
-                <div
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
                   key={index}
                   className={`flex flex-col ${
                     msg.sender === "user" ? "items-end" : "items-start"
                   }`}
                 >
-                  <div className="flex items-end gap-2 max-w-[88%]">
+                  <div className="flex items-end gap-2 max-w-[90%]">
                     {msg.sender === "bot" && (
-                      <div className="w-7 h-7 rounded-lg bg-[#071A4A] text-white flex items-center justify-center shrink-0 mb-1 shadow-xs">
+                      <div className="w-7 h-7 rounded-xl bg-[#071A4A] text-white flex items-center justify-center shrink-0 mb-1 shadow-sm">
                         <Bot size={14} />
                       </div>
                     )}
 
                     <div
-                      className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
+                      className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
                         msg.sender === "user"
-                          ? "bg-[#071A4A] text-white rounded-br-none font-medium"
-                          : "bg-white text-gray-700 rounded-bl-none border border-gray-100"
+                          ? "bg-gradient-to-r from-[#071A4A] to-blue-900 text-white rounded-br-none font-medium shadow-blue-900/10"
+                          : "bg-white text-gray-700 rounded-bl-none border border-blue-100/60 shadow-sm"
                       }`}
                     >
                       <p>{msg.text}</p>
 
                       {msg.list && (
-                        <ul className="mt-2.5 space-y-1.5 border-t border-gray-100 pt-2.5">
+                        <ul className="mt-3 space-y-2 border-t border-gray-100 pt-3">
                           {msg.list.map((item, lIdx) => (
-                            <li key={lIdx} className="text-xs text-gray-600 flex items-start gap-1.5">
+                            <motion.li 
+                              initial={{ opacity: 0, x: -5 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: lIdx * 0.05 }}
+                              key={lIdx} 
+                              className="text-xs text-gray-600 flex items-start gap-2 bg-gray-50/80 p-2 rounded-xl border border-gray-100"
+                            >
                               <span>{item}</span>
-                            </li>
+                            </motion.li>
                           ))}
                         </ul>
                       )}
                     </div>
 
                     {msg.sender === "user" && (
-                      <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 mb-1 shadow-xs">
+                      <div className="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 mb-1 shadow-sm">
                         <User size={14} />
                       </div>
                     )}
                   </div>
 
                   {msg.options && (
-                    <div className="flex flex-wrap gap-1.5 mt-2.5 pl-9">
+                    <div className="flex flex-wrap gap-1.5 mt-3 pl-9">
                       {msg.options.map((opt, oIdx) => (
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.03, y: -1 }}
+                          whileTap={{ scale: 0.97 }}
                           key={oIdx}
                           onClick={() => handleOptionClick(opt.next, opt.label)}
-                          className="bg-white hover:bg-blue-50 text-[#071A4A] border border-blue-200/80 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all shadow-2xs hover:scale-[1.02] active:scale-95 text-left"
+                          className="bg-white hover:bg-blue-50/80 text-[#071A4A] border border-blue-200/80 text-xs font-semibold px-3.5 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5 text-left group"
                         >
-                          {opt.label}
-                        </button>
+                          <span>{opt.label}</span>
+                          <ArrowRight size={12} className="text-blue-500 group-hover:translate-x-0.5 transition-transform" />
+                        </motion.button>
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
+
+              {/* Interactive Typing Indicator */}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 pl-2"
+                >
+                  <div className="w-7 h-7 rounded-xl bg-[#071A4A] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <Bot size={14} />
+                  </div>
+                  <div className="bg-white border border-blue-100 px-4 py-3 rounded-2xl rounded-bl-none flex items-center gap-1.5 shadow-xs">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                </motion.div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
             {/* Footer Notice */}
-            <div className="p-3 bg-white border-t border-gray-100 text-center shrink-0">
-              <p className="text-[10px] text-gray-400 font-medium">
+            <div className="p-3 bg-white border-t border-blue-50 text-center shrink-0 flex items-center justify-center gap-1">
+              <Sparkles size={11} className="text-blue-500" />
+              <p className="text-[10px] text-gray-400 font-medium tracking-wide">
                 Powered by Liknayan Tech Solutions Interactive System
               </p>
             </div>
