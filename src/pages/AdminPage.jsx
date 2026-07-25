@@ -294,8 +294,8 @@ export default function AdminPage({ supabase }) {
       {/* Main Workspace Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Left Side: Creation / Editing Form Container */}
-        <div className="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-blue-950/5 border border-gray-100 sticky top-6">
+        {/* Left Side: Creation / Editing Form Container (Removed sticky on mobile so it scrolls normally) */}
+        <div className="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl shadow-xl shadow-blue-950/5 border border-gray-100 lg:sticky lg:top-6">
           <form onSubmit={handleSavePost} className="space-y-5">
             <div className="flex justify-between items-center pb-3 border-b border-gray-100">
               <h2 className="text-base font-bold flex items-center gap-2 text-[#071A4A]">
@@ -433,7 +433,6 @@ export default function AdminPage({ supabase }) {
                       type="button"
                       onClick={() => confirmDeleteClick(post.id)}
                       className="p-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 border border-red-100/60 transition"
-                      title="Delete Post"
                     >
                       <Trash2 size={16} />
                     </button>
