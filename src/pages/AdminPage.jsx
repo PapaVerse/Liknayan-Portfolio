@@ -92,6 +92,9 @@ export default function AdminPage({ supabase }) {
           .getPublicUrl(fileName);
           
         mediaUrl = publicURLData.publicUrl;
+      } else if (!mediaUrl) {
+        // Fallback to local default image if no file is attached and no existing URL is present
+        mediaUrl = "/images/Liknayan.jpg";
       }
 
       if (editingId) {

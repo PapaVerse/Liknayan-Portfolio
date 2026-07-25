@@ -56,7 +56,7 @@ export default function Services() {
   };
 
   return (
-    <section className="pt-32 pb-24 min-h-screen bg-white relative overflow-visible text-[#071A4A]">
+    <div className="pt-32 pb-24 min-h-screen bg-white relative overflow-hidden text-[#071A4A]">
       
       {/* Background Glow Orbs */}
       <motion.div 
@@ -106,6 +106,6 @@ export default function Services() {
         <ServicesCTA itemVariants={itemVariants} />
 
       </motion.div>
-    </section>
+    </div>
   );
 }
