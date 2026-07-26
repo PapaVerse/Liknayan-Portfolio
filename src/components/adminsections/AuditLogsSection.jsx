@@ -28,6 +28,7 @@ export default function AuditLogsSection({ auditLogs, auditSearch, setAuditSearc
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-gray-100 text-gray-400 text-[11px] uppercase tracking-wider font-semibold">
+              <th className="py-3 px-4">Admin Name</th>
               <th className="py-3 px-4">Admin Email</th>
               <th className="py-3 px-4">Action</th>
               <th className="py-3 px-4">Details / Notes</th>
@@ -40,7 +41,8 @@ export default function AuditLogsSection({ auditLogs, auditSearch, setAuditSearc
                 const timestampVal = audit.created_at || audit.date || new Date().toISOString();
                 return (
                   <tr key={audit.id || Math.random()} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-4 px-4 font-medium">{highlightMatch(audit.email || "Unknown", auditSearch)}</td>
+                    <td className="py-4 px-4 font-bold">{highlightMatch(audit.name || "Admin", auditSearch)}</td>
+                    <td className="py-4 px-4 text-gray-600">{highlightMatch(audit.email || "Unknown", auditSearch)}</td>
                     <td className="py-4 px-4 font-semibold text-blue-900">
                       {highlightMatch(audit.action || "Action Performed", auditSearch)}
                     </td>
@@ -55,7 +57,7 @@ export default function AuditLogsSection({ auditLogs, auditSearch, setAuditSearc
               })
             ) : (
               <tr>
-                <td colSpan="4" className="py-12 text-center text-gray-400 text-sm">
+                <td colSpan="5" className="py-12 text-center text-gray-400 text-sm">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <Database size={24} className="text-gray-300" />
                     <span>No audit trails recorded yet.</span>

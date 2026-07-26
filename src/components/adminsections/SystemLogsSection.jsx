@@ -28,6 +28,7 @@ export default function SystemLogsSection({ systemLogs, sysLogSearch, setSysLogS
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-gray-100 text-gray-400 text-[11px] uppercase tracking-wider font-semibold">
+              <th className="py-3 px-4">Admin Name</th>
               <th className="py-3 px-4">Admin Email</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">Timestamp</th>
@@ -39,7 +40,8 @@ export default function SystemLogsSection({ systemLogs, sysLogSearch, setSysLogS
                 const timestampVal = log.created_at || log.date || new Date().toISOString();
                 return (
                   <tr key={log.id || Math.random()} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-4 px-4 font-medium">{highlightMatch(log.email || "Unknown", sysLogSearch)}</td>
+                    <td className="py-4 px-4 font-bold">{highlightMatch(log.name || "Unknown", sysLogSearch)}</td>
+                    <td className="py-4 px-4 text-gray-600">{highlightMatch(log.email || "Unknown", sysLogSearch)}</td>
                     <td className="py-4 px-4">
                       <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-semibold rounded-full text-xs border border-emerald-100">
                         {highlightMatch(log.status || "Successful Login", sysLogSearch)}
@@ -53,7 +55,7 @@ export default function SystemLogsSection({ systemLogs, sysLogSearch, setSysLogS
               })
             ) : (
               <tr>
-                <td colSpan="3" className="py-12 text-center text-gray-400 text-sm">
+                <td colSpan="4" className="py-12 text-center text-gray-400 text-sm">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <ShieldAlert size={24} className="text-gray-300" />
                     <span>No system login logs found.</span>

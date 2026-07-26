@@ -24,7 +24,7 @@ export default function LoginPage({ supabase }) {
 
       if (authError) throw authError;
 
-      // 2. Verify if the user has an admin role in your database ('admins' table) and grab their database email field
+      // 2. Verify if the user has an admin role in your database ('admins' table) and grab their database email & name fields
       const { data: adminData, error: adminError } = await supabase
         .from("admins")
         .select("*")
@@ -36,10 +36,11 @@ export default function LoginPage({ supabase }) {
         throw new Error("Access denied. Unauthorized user account.");
       }
 
-      // 3. Log the successful system login directly to your 'system_logs' table using the exact email from the admins table
+      // 3. Log the successful system login directly to your 'system_logs' table including both email and name
       const { error: logError } = await supabase.from("system_logs").insert([
         { 
           email: adminData.email, 
+          name: adminData.name || "Admin",
           status: "Successful Login", 
           created_at: new Date().toISOString() 
         }
@@ -49,8 +50,9 @@ export default function LoginPage({ supabase }) {
         console.error("Failed to insert system log:", logError.message);
       }
 
-      // 4. Save the correct database email & ID to localStorage for dashboard references
+      // 4. Save the correct database email, name, & ID to localStorage for dashboard references
       localStorage.setItem("adminEmail", adminData.email);
+      localStorage.setItem("adminName", adminData.name || "Admin");
       localStorage.setItem("adminId", authData.user.id);
 
       // Successful login and verified admin role

@@ -2,23 +2,25 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   LogOut, CheckCircle2, Loader2, AlertTriangle, LayoutDashboard, 
-  FileText, UserCheck, Activity, Database 
+  FileText, UserCheck, Activity, Database, ShieldCheck 
 } from "lucide-react";
 
 import PostsSection from "../components/adminsections/PostsSection";
 import SystemLogsSection from "../components/adminsections/SystemLogsSection";
 import AuditLogsSection from "../components/adminsections/AuditLogsSection";
+import AdminUsersSection from "../components/adminsections/AdminUsersSection";
 
 export default function AdminPage({ supabase }) {
   const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [toastType, setToastType] = useState("success");
-  const [activeTab, setActiveTab] = useState("posts"); // "posts", "system_logs", "audit_logs"
+  const [activeTab, setActiveTab] = useState("posts"); // "posts", "system_logs", "audit_logs", "admin_users"
 
   // Data states
   const [posts, setPosts] = useState([]);
   const [systemLogs, setSystemLogs] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
+  const [adminName, setAdminName] = useState(""); // State to store logged-in admin's name
 
   // Search queries per tab
   const [postSearch, setPostSearch] = useState("");
@@ -59,7 +61,7 @@ export default function AdminPage({ supabase }) {
       return;
     }
     
-    // Verify admin exists in the database
+    // Verify admin exists in the database and fetch their name
     const { data: adminData } = await supabase
       .from("admins")
       .select("*")
@@ -68,6 +70,8 @@ export default function AdminPage({ supabase }) {
 
     if (!adminData) {
       navigate("/loginpage");
+    } else {
+      setAdminName(adminData.name || "Admin");
     }
   };
 
@@ -109,18 +113,23 @@ export default function AdminPage({ supabase }) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      // Query the admins table strictly using the CURRENT active session's user ID 
-      // so logs record the specific admin executing the action, preventing cross-account bleeding.
       const { data: adminData } = await supabase
         .from("admins")
-        .select("email")
+        .select("email, name")
         .eq("id", session.user.id)
         .single();
 
       const userEmail = adminData?.email || session.user.email;
+      const userName = adminData?.name || "Admin";
 
       await supabase.from("audit_logs").insert([
-        { email: userEmail, action: actionText, notes: notesText, created_at: new Date() }
+        { 
+          email: userEmail, 
+          name: userName, 
+          action: actionText, 
+          notes: notesText, 
+          created_at: new Date() 
+        }
       ]);
     } catch (e) {
       console.error("Audit log error:", e);
@@ -161,7 +170,6 @@ export default function AdminPage({ supabase }) {
 
       const { data: { session } } = await supabase.auth.getSession();
       
-      // Fetch current active admin email for the log note
       let userEmail = session?.user?.email;
       if (session) {
         const { data: adminData } = await supabase
@@ -300,7 +308,12 @@ export default function AdminPage({ supabase }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 relative z-10 w-full md:w-auto justify-end">
+          <div className="flex items-center gap-4 relative z-10 w-full md:w-auto justify-end">
+            <div className="text-right hidden sm:block">
+              <p className="text-xs text-gray-400 font-medium">Logged in as</p>
+              <p className="text-sm font-bold text-[#071A4A]">{adminName || "Loading..."}</p>
+            </div>
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-2xl text-xs sm:text-sm font-semibold hover:bg-red-100 border border-red-100 transition shadow-2xs"
@@ -346,7 +359,7 @@ export default function AdminPage({ supabase }) {
 
       {/* Tabs Navigation */}
       <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 max-w-fit gap-2">
+        <div className="flex flex-wrap bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 gap-2">
           <button
             onClick={() => setActiveTab("posts")}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
@@ -372,6 +385,15 @@ export default function AdminPage({ supabase }) {
             }`}
           >
             <Activity size={16} /> 3. Audit Trails & Changes
+          </button>
+
+          <button
+            onClick={() => setActiveTab("admin_users")}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+              activeTab === "admin_users" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <ShieldCheck size={16} /> 4. Admin User Management
           </button>
         </div>
       </div>
@@ -415,46 +437,57 @@ export default function AdminPage({ supabase }) {
       )}
 
       {/* Render Active Section Component */}
-      {activeTab === "posts" && (
-        <PostsSection 
-          posts={filteredPosts}
-          postSearch={postSearch}
-          setPostSearch={setPostSearch}
-          handleSavePost={handleSavePost}
-          handleEditClick={handleEditClick}
-          confirmDeleteClick={confirmDeleteClick}
-          editingId={editingId}
-          resetForm={resetForm}
-          postTitle={postTitle}
-          setPostTitle={setPostTitle}
-          postCategory={postCategory}
-          setPostCategory={setPostCategory}
-          postContent={postContent}
-          setPostContent={setPostContent}
-          setMediaFile={setMediaFile}
-          existingMediaUrl={existingMediaUrl}
-          loading={loading}
-          highlightMatch={highlightMatch}
-        />
-      )}
+      <div className="max-w-7xl mx-auto">
+        {activeTab === "posts" && (
+          <PostsSection 
+            posts={filteredPosts}
+            postSearch={postSearch}
+            setPostSearch={setPostSearch}
+            handleSavePost={handleSavePost}
+            handleEditClick={handleEditClick}
+            confirmDeleteClick={confirmDeleteClick}
+            editingId={editingId}
+            resetForm={resetForm}
+            postTitle={postTitle}
+            setPostTitle={setPostTitle}
+            postCategory={postCategory}
+            setPostCategory={setPostCategory}
+            postContent={postContent}
+            setPostContent={setPostContent}
+            setMediaFile={setMediaFile}
+            existingMediaUrl={existingMediaUrl}
+            loading={loading}
+            highlightMatch={highlightMatch}
+          />
+        )}
 
-      {activeTab === "system_logs" && (
-        <SystemLogsSection 
-          systemLogs={filteredSystemLogs}
-          sysLogSearch={sysLogSearch}
-          setSysLogSearch={setSysLogSearch}
-          highlightMatch={highlightMatch}
-        />
-      )}
+        {activeTab === "system_logs" && (
+          <SystemLogsSection 
+            systemLogs={filteredSystemLogs}
+            sysLogSearch={sysLogSearch}
+            setSysLogSearch={setSysLogSearch}
+            highlightMatch={highlightMatch}
+          />
+        )}
 
-      {activeTab === "audit_logs" && (
-        <AuditLogsSection 
-          auditLogs={filteredAuditLogs}
-          auditSearch={auditSearch}
-          setAuditSearch={setAuditSearch}
-          highlightMatch={highlightMatch}
-        />
-      )}
+        {activeTab === "audit_logs" && (
+          <AuditLogsSection 
+            auditLogs={filteredAuditLogs}
+            auditSearch={auditSearch}
+            setAuditSearch={setAuditSearch}
+            highlightMatch={highlightMatch}
+          />
+        )}
+
+        {activeTab === "admin_users" && (
+          <AdminUsersSection 
+            supabase={supabase}
+            showToast={showToast}
+            logActionToAudit={logActionToAudit}
+            currentAdminEmail={adminName}
+          />
+        )}
+      </div>
     </div>
   );
 }
