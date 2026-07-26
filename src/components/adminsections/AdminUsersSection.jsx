@@ -212,21 +212,21 @@ export default function AdminUsersSection({ supabase, showToast, logActionToAudi
               <tbody className="divide-y divide-gray-100 text-sm">
                 {admins.map((adm) => (
                   <tr key={adm.id} className="hover:bg-gray-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#071A4A] flex items-center gap-2.5">
+                    <td className="py-4 px-6 font-bold text-[#071A4A] flex items-center gap-2.5 align-middle">
                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-xs">
                         {adm.name ? adm.name.charAt(0).toUpperCase() : "A"}
                       </div>
                       {adm.name || "Unnamed Admin"}
                     </td>
-                    <td className="py-4 px-6 text-gray-600">{adm.email}</td>
-                    <td className="py-4 px-6 text-gray-500 text-xs">
+                    <td className="py-4 px-6 text-gray-600 align-middle">{adm.email}</td>
+                    <td className="py-4 px-6 text-gray-500 text-xs align-middle whitespace-nowrap">
                       {new Date(adm.created_at).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric"
                       })}
                     </td>
-                    <td className="py-4 px-6 text-right">
+                    <td className="py-4 px-6 text-right align-middle">
                       <button
                         onClick={() => setAdminToDelete(adm)}
                         className="p-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 border border-red-100 transition inline-flex items-center gap-1.5 text-xs font-semibold"

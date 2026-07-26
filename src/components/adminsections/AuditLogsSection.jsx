@@ -41,15 +41,17 @@ export default function AuditLogsSection({ auditLogs, auditSearch, setAuditSearc
                 const timestampVal = audit.created_at || audit.date || new Date().toISOString();
                 return (
                   <tr key={audit.id || Math.random()} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-4 px-4 font-bold">{highlightMatch(audit.name || "Admin", auditSearch)}</td>
-                    <td className="py-4 px-4 text-gray-600">{highlightMatch(audit.email || "Unknown", auditSearch)}</td>
-                    <td className="py-4 px-4 font-semibold text-blue-900">
-                      {highlightMatch(audit.action || "Action Performed", auditSearch)}
+                    <td className="py-4 px-4 font-bold align-middle">{highlightMatch(audit.name || "Admin", auditSearch)}</td>
+                    <td className="py-4 px-4 text-gray-600 align-middle">{highlightMatch(audit.email || "Unknown", auditSearch)}</td>
+                    <td className="py-4 px-4 font-semibold text-blue-900 align-middle">
+                      <span className="inline-block whitespace-nowrap">
+                        {highlightMatch(audit.action || "Action Performed", auditSearch)}
+                      </span>
                     </td>
-                    <td className="py-4 px-4 text-gray-600 max-w-xs truncate">
+                    <td className="py-4 px-4 text-gray-600 max-w-xs truncate align-middle">
                       {highlightMatch(audit.notes || "—", auditSearch)}
                     </td>
-                    <td className="py-4 px-4 text-gray-500 text-xs whitespace-nowrap">
+                    <td className="py-4 px-4 text-gray-500 text-xs whitespace-nowrap align-middle">
                       {new Date(timestampVal).toLocaleString()}
                     </td>
                   </tr>

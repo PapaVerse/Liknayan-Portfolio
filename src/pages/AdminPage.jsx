@@ -353,23 +353,23 @@ export default function AdminPage({ supabase }) {
       </div>
 
       {/* Metrics Cards with 7-Day Trend Widget */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 mb-8">
         {/* Total Active Posts Card */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-2 sm:mb-4">
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Active Posts</p>
-              <h3 className="text-3xl font-black text-[#071A4A]">{posts.length}</h3>
+              <p className="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1">Total Active Posts</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-[#071A4A]">{posts.length}</h3>
             </div>
-            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center border border-blue-100 shrink-0">
-              <LayoutDashboard size={22} />
+            <div className="w-9 h-9 sm:w-12 sm:h-12 bg-blue-50 text-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center border border-blue-100 shrink-0">
+              <LayoutDashboard size={18} className="sm:w-[22px] sm:h-[22px]" />
             </div>
           </div>
-          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
-            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+          <div className="pt-2 sm:pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-10 sm:h-14">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1 sm:gap-1.5 h-full flex-1 justify-end">
               {postTrend.map((height, idx) => (
-                <div key={idx} className="w-2 bg-blue-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                <div key={idx} className="w-1.5 sm:w-2 bg-blue-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
                   <div 
                     className="bg-blue-600 rounded-full transition-all duration-500" 
                     style={{ height: `${Math.max(height, 12)}%` }} 
@@ -382,21 +382,21 @@ export default function AdminPage({ supabase }) {
         </div>
 
         {/* System Sessions Card */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-2 sm:mb-4">
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">System Sessions</p>
-              <h3 className="text-3xl font-black text-[#071A4A]">{systemLogs.length}</h3>
+              <p className="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1">System Sessions</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-[#071A4A]">{systemLogs.length}</h3>
             </div>
-            <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center border border-indigo-100 shrink-0">
-              <Activity size={22} />
+            <div className="w-9 h-9 sm:w-12 sm:h-12 bg-indigo-50 text-indigo-600 rounded-xl sm:rounded-2xl flex items-center justify-center border border-indigo-100 shrink-0">
+              <Activity size={18} className="sm:w-[22px] sm:h-[22px]" />
             </div>
           </div>
-          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
-            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+          <div className="pt-2 sm:pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-10 sm:h-14">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1 sm:gap-1.5 h-full flex-1 justify-end">
               {systemLogTrend.map((height, idx) => (
-                <div key={idx} className="w-2 bg-indigo-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                <div key={idx} className="w-1.5 sm:w-2 bg-indigo-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
                   <div 
                     className="bg-indigo-600 rounded-full transition-all duration-500" 
                     style={{ height: `${Math.max(height, 12)}%` }} 
@@ -409,21 +409,21 @@ export default function AdminPage({ supabase }) {
         </div>
 
         {/* Audit Records Card */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-2 sm:mb-4">
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Audit Records</p>
-              <h3 className="text-3xl font-black text-[#071A4A]">{auditLogs.length}</h3>
+              <p className="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-0.5 sm:mb-1">Audit Records</p>
+              <h3 className="text-2xl sm:text-3xl font-black text-[#071A4A]">{auditLogs.length}</h3>
             </div>
-            <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 shrink-0">
-              <Database size={22} />
+            <div className="w-9 h-9 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-xl sm:rounded-2xl flex items-center justify-center border border-emerald-100 shrink-0">
+              <Database size={18} className="sm:w-[22px] sm:h-[22px]" />
             </div>
           </div>
-          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
-            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+          <div className="pt-2 sm:pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-10 sm:h-14">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1 sm:gap-1.5 h-full flex-1 justify-end">
               {auditLogTrend.map((height, idx) => (
-                <div key={idx} className="w-2 bg-emerald-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                <div key={idx} className="w-1.5 sm:w-2 bg-emerald-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
                   <div 
                     className="bg-emerald-600 rounded-full transition-all duration-500" 
                     style={{ height: `${Math.max(height, 12)}%` }} 

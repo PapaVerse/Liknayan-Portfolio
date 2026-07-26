@@ -40,14 +40,14 @@ export default function SystemLogsSection({ systemLogs, sysLogSearch, setSysLogS
                 const timestampVal = log.created_at || log.date || new Date().toISOString();
                 return (
                   <tr key={log.id || Math.random()} className="hover:bg-blue-50/30 transition-colors">
-                    <td className="py-4 px-4 font-bold">{highlightMatch(log.name || "Unknown", sysLogSearch)}</td>
-                    <td className="py-4 px-4 text-gray-600">{highlightMatch(log.email || "Unknown", sysLogSearch)}</td>
-                    <td className="py-4 px-4">
-                      <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 font-semibold rounded-full text-xs border border-emerald-100">
+                    <td className="py-4 px-4 font-bold align-middle">{highlightMatch(log.name || "Unknown", sysLogSearch)}</td>
+                    <td className="py-4 px-4 text-gray-600 align-middle">{highlightMatch(log.email || "Unknown", sysLogSearch)}</td>
+                    <td className="py-4 px-4 align-middle">
+                      <span className="inline-flex items-center px-3 py-1 bg-emerald-50 text-emerald-700 font-semibold rounded-full text-xs border border-emerald-100 whitespace-nowrap">
                         {highlightMatch(log.status || "Successful Login", sysLogSearch)}
                       </span>
                     </td>
-                    <td className="py-4 px-4 text-gray-500 text-xs">
+                    <td className="py-4 px-4 text-gray-500 text-xs align-middle">
                       {new Date(timestampVal).toLocaleString()}
                     </td>
                   </tr>
