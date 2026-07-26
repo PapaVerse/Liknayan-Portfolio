@@ -2,19 +2,20 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   LogOut, CheckCircle2, Loader2, AlertTriangle, LayoutDashboard, 
-  FileText, UserCheck, Activity, Database, ShieldCheck 
+  FileText, UserCheck, Activity, Database, ShieldCheck, Server 
 } from "lucide-react";
 
 import PostsSection from "../components/adminsections/PostsSection";
 import SystemLogsSection from "../components/adminsections/SystemLogsSection";
 import AuditLogsSection from "../components/adminsections/AuditLogsSection";
 import AdminUsersSection from "../components/adminsections/AdminUsersSection";
+import HealthSection from "../components/adminsections/HealthSection";
 
 export default function AdminPage({ supabase }) {
   const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [toastType, setToastType] = useState("success");
-  const [activeTab, setActiveTab] = useState("posts"); // "posts", "system_logs", "audit_logs", "admin_users"
+  const [activeTab, setActiveTab] = useState("posts"); // "posts", "system_logs", "audit_logs", "admin_users", "health"
 
   // Data states
   const [posts, setPosts] = useState([]);
@@ -263,6 +264,33 @@ export default function AdminPage({ supabase }) {
     );
   };
 
+  // Helper generator to compute 7-day activity breakdown for trend widget
+  const get7DayActivity = (dataList) => {
+    const counts = [0, 0, 0, 0, 0, 0, 0];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    dataList.forEach(item => {
+      const itemDate = new Date(item.created_at);
+      itemDate.setHours(0, 0, 0, 0);
+      const diffTime = today - itemDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays >= 0 && diffDays < 7) {
+        // Index 6 is today, Index 0 is 6 days ago
+        const index = 6 - diffDays;
+        counts[index]++;
+      }
+    });
+
+    const maxVal = Math.max(...counts, 1);
+    return counts.map(count => Math.round((count / maxVal) * 100)); // Height percentage 0-100%
+  };
+
+  const postTrend = useMemo(() => get7DayActivity(posts), [posts]);
+  const systemLogTrend = useMemo(() => get7DayActivity(systemLogs), [systemLogs]);
+  const auditLogTrend = useMemo(() => get7DayActivity(auditLogs), [auditLogs]);
+
   const filteredPosts = useMemo(() => {
     return posts.filter(p => 
       p.title.toLowerCase().includes(postSearch.toLowerCase()) ||
@@ -324,76 +352,146 @@ export default function AdminPage({ supabase }) {
         </div>
       </div>
 
-      {/* Metrics Cards */}
+      {/* Metrics Cards with 7-Day Trend Widget */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Active Posts</p>
-            <h3 className="text-3xl font-black text-[#071A4A]">{posts.length}</h3>
+        {/* Total Active Posts Card */}
+        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Active Posts</p>
+              <h3 className="text-3xl font-black text-[#071A4A]">{posts.length}</h3>
+            </div>
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center border border-blue-100 shrink-0">
+              <LayoutDashboard size={22} />
+            </div>
           </div>
-          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center border border-blue-100">
-            <LayoutDashboard size={22} />
+          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
+            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+              {postTrend.map((height, idx) => (
+                <div key={idx} className="w-2 bg-blue-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                  <div 
+                    className="bg-blue-600 rounded-full transition-all duration-500" 
+                    style={{ height: `${Math.max(height, 12)}%` }} 
+                    title={`Activity level: ${height}%`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">System Sessions</p>
-            <h3 className="text-3xl font-black text-[#071A4A]">{systemLogs.length}</h3>
+        {/* System Sessions Card */}
+        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">System Sessions</p>
+              <h3 className="text-3xl font-black text-[#071A4A]">{systemLogs.length}</h3>
+            </div>
+            <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center border border-indigo-100 shrink-0">
+              <Activity size={22} />
+            </div>
           </div>
-          <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center border border-indigo-100">
-            <Activity size={22} />
+          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
+            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+              {systemLogTrend.map((height, idx) => (
+                <div key={idx} className="w-2 bg-indigo-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                  <div 
+                    className="bg-indigo-600 rounded-full transition-all duration-500" 
+                    style={{ height: `${Math.max(height, 12)}%` }} 
+                    title={`Activity level: ${height}%`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Audit Records</p>
-            <h3 className="text-3xl font-black text-[#071A4A]">{auditLogs.length}</h3>
+        {/* Audit Records Card */}
+        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-md shadow-blue-950/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Audit Records</p>
+              <h3 className="text-3xl font-black text-[#071A4A]">{auditLogs.length}</h3>
+            </div>
+            <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 shrink-0">
+              <Database size={22} />
+            </div>
           </div>
-          <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100">
-            <Database size={22} />
+          <div className="pt-3 border-t border-gray-50 flex items-end justify-between gap-1 h-14">
+            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-tight self-end pb-0.5">7-Day Trend</span>
+            <div className="flex items-end gap-1.5 h-full flex-1 justify-end">
+              {auditLogTrend.map((height, idx) => (
+                <div key={idx} className="w-2 bg-emerald-100 rounded-full overflow-hidden flex flex-col justify-end h-full">
+                  <div 
+                    className="bg-emerald-600 rounded-full transition-all duration-500" 
+                    style={{ height: `${Math.max(height, 12)}%` }} 
+                    title={`Activity level: ${height}%`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Tabs Navigation */}
       <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex flex-wrap bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 gap-2">
+        <div className="flex flex-wrap bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 gap-2 justify-around sm:justify-start">
           <button
             onClick={() => setActiveTab("posts")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+            title="Posts & Updates"
+            className={`flex items-center justify-center gap-2 p-3 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === "posts" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <FileText size={16} /> 1. Posts & Updates
+            <FileText size={18} className="shrink-0" /> 
+            <span className="hidden sm:inline">1. Posts & Updates</span>
           </button>
           
           <button
             onClick={() => setActiveTab("system_logs")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+            title="System Login Logs"
+            className={`flex items-center justify-center gap-2 p-3 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === "system_logs" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <UserCheck size={16} /> 2. System Login Logs
+            <UserCheck size={18} className="shrink-0" /> 
+            <span className="hidden sm:inline">2. System Login Logs</span>
           </button>
 
           <button
             onClick={() => setActiveTab("audit_logs")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+            title="Audit Trails & Changes"
+            className={`flex items-center justify-center gap-2 p-3 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === "audit_logs" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <Activity size={16} /> 3. Audit Trails & Changes
+            <Activity size={18} className="shrink-0" /> 
+            <span className="hidden sm:inline">3. Audit Trails & Changes</span>
           </button>
 
           <button
             onClick={() => setActiveTab("admin_users")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+            title="Admin User Management"
+            className={`flex items-center justify-center gap-2 p-3 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
               activeTab === "admin_users" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <ShieldCheck size={16} /> 4. Admin User Management
+            <ShieldCheck size={18} className="shrink-0" /> 
+            <span className="hidden sm:inline">4. Admin User Management</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("health")}
+            title="System Health"
+            className={`flex items-center justify-center gap-2 p-3 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition ${
+              activeTab === "health" ? "bg-[#071A4A] text-white shadow-md shadow-blue-950/20" : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <Server size={18} className="shrink-0" /> 
+            <span className="hidden sm:inline">5. System Health</span>
           </button>
         </div>
       </div>
@@ -485,6 +583,13 @@ export default function AdminPage({ supabase }) {
             showToast={showToast}
             logActionToAudit={logActionToAudit}
             currentAdminEmail={adminName}
+          />
+        )}
+
+        {activeTab === "health" && (
+          <HealthSection 
+            supabase={supabase}
+            showToast={showToast}
           />
         )}
       </div>
