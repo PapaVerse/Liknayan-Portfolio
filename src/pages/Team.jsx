@@ -207,7 +207,7 @@ const teamMembers = [
   },
   {
     name: "Ciara",
-    role: "Graphic Layout Designer",
+    role: "Graphic/ UI Designer",
     image: "/images/Ciara.jpg",
     skills: {
       "Creative & Media": ["Videographer", "Video Editor", "Photographer", "Photo Editor", "Sublimation Designer"],
